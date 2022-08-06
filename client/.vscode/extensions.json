@@ -1,0 +1,30 @@
+{
+  "recommendations": [
+    "adpyke.codesnap",
+    "bierner.emojisense",
+    "dbaeumer.vscode-eslint",
+    "dsznajder.es7-react-js-snippets",
+    "eamodio.gitlens",
+    "ecmel.vscode-html-css",
+    "esbenp.prettier-vscode",
+    "firsttris.vscode-jest-runner",
+    "github.copilot",
+    "jakewilson.vscode-cdnjs",
+    "jeff-hykin.better-cpp-syntax",
+    "kamikillerto.vscode-colorize",
+    "ms-vscode.cpptools",
+    "ms-vsliveshare.vsliveshare",
+    "naumovs.color-highlight",
+    "pkief.material-icon-theme",
+    "pranaygp.vscode-css-peek",
+    "ritwickdey.liveserver",
+    "shan.code-settings-sync",
+    "simonsiefke.svg-preview",
+    "tyriar.sort-lines",
+    "usernamehw.errorlens",
+    "vscode-icons-team.vscode-icons",
+    "wraith13.bracket-lens",
+    "xabikos.javascriptsnippets",
+    "ysemeniuk.emmet-live"
+  ]
+}
