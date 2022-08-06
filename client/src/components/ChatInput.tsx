@@ -1,22 +1,25 @@
-import { Search } from '@mui/icons-material';
 import { InputAdornment, styled, TextField } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 
 const $Container = styled('div')(() => ({
-  padding: '4px 12px',
-  height: 'fit-content',
+  display: 'flex',
+  alignItems: 'center',
+  width: '100%',
+  padding: '4px 16px',
+  marginBottom: '8px',
 }));
 
-export default function UserSearch() {
+export default function ChatInput() {
   return (
     <$Container>
       <TextField
         size='small'
         fullWidth
-        placeholder='search user to start chat'
+        placeholder='Type a message'
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <Search htmlColor='#47e7e7' fontSize='small' />
+              <SendIcon htmlColor='#47e7e7' />
             </InputAdornment>
           ),
         }}

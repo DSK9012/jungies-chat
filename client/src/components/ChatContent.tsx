@@ -1,4 +1,7 @@
 import { styled } from '@mui/material';
+import Chat from './Chat';
+import ChatInput from './ChatInput';
+import UserChatHeader from './UserChatHeader';
 
 const $Container = styled('div')(({ theme }) => ({
   height: '90%',
@@ -9,16 +12,17 @@ const $Container = styled('div')(({ theme }) => ({
   borderRightColor: 'rgb(255,255,255, 0.2)',
   borderBottomColor: 'rgb(255,255,255, 0.2)',
   borderRadius: '5px',
-  // display: 'flex',
-  // alignItems: 'center',
-  // justifyContent: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
 }));
 
 export default function ChatContent() {
   return (
     <$Container>
-      <h1>main menu</h1>
-      <h1>main menu</h1>
+      <UserChatHeader />
+      <Chat />
+      <ChatInput />
     </$Container>
   );
 }
