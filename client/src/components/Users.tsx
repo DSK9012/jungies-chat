@@ -8,6 +8,9 @@ const $Container = styled('div')(() => ({
   width: '100%',
   overflow: 'auto',
   padding: '10px 12px',
+  '&::-webkit-scrollbar-track:hover': {
+    display: 'none',
+  },
 }));
 
 const $UserContainer = styled('div')(() => ({

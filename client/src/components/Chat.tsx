@@ -6,6 +6,9 @@ const $Container = styled('div')(() => ({
   width: '100%',
   padding: '4px 16px',
   overflow: 'auto',
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
 }));
 
 const $Message = styled('div')(() => ({
