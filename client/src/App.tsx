@@ -1,4 +1,6 @@
 import { styled } from '@mui/material';
+import { useEffect } from 'react';
+import io from 'socket.io-client';
 import ChatContent from 'components/ChatContent';
 import UsersList from 'components/UsersList';
 
@@ -57,10 +59,26 @@ const $GlassCircleGradient3 = styled('span')(() => ({
   borderRadius: '50%',
   right: '-2%',
   top: '5%',
-  // transform: 'translate(-70%, -30%)',
 }));
 
 function App() {
+  useEffect(() => {
+    const socket = io('ws://localhost:5000/socket/one2one');
+    socket.on('connect', () => {
+      const transport = socket.io.engine.transport.name; // in most cases, "polling"
+      console.log(transport);
+      socket.io.engine.on('upgrade', () => {
+        const upgradedTransport = socket.io.engine.transport.name; // in most cases, "websocket"
+        console.log(upgradedTransport);
+      });
+      localStorage.debug = '*';
+    });
+
+    socket.emit('sendMessage', 'sai');
+    socket.emit('sendMessage', 'sai1');
+    socket.emit('sendMessage', 'sai2');
+  }, []);
+
   return (
     <$Container>
       <$GlassCircleGradient1 />
