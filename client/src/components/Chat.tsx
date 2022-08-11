@@ -29,11 +29,23 @@ const $Message = styled('div')(() => ({
   },
 }));
 
+const $MsgTime = styled('sub')(({ theme }) => ({
+  marginLeft: '6px',
+  fontSize: '13px',
+  textAlign: 'right',
+}));
+
 export default function Chat() {
   return (
     <$Container>
-      <$Message className='left'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</$Message>
-      <$Message className='right'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</$Message>
+      <$Message className='left'>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <$MsgTime>6:00 am</$MsgTime>
+      </$Message>
+      <$Message className='right'>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <$MsgTime>11:56 pm</$MsgTime>
+      </$Message>
       <$Message className='right'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</$Message>
       <$Message className='right'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</$Message>
       <$Message className='left'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</$Message>

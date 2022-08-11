@@ -22,7 +22,7 @@ export default function ChatInput() {
         placeholder='Type a message'
         InputProps={{
           startAdornment: (
-            <InputAdornment position='end'>
+            <InputAdornment position='start'>
               <EmojiEmotionsIcon htmlColor='#47e7e7' fontSize='small' />
             </InputAdornment>
           ),

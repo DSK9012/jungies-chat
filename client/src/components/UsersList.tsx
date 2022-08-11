@@ -19,10 +19,14 @@ const $Container = styled('div')(({ theme }) => ({
   flexDirection: 'column',
 }));
 
-export default function UsersList() {
+interface IUsersListProps {
+  userName: string;
+}
+
+export default function UsersList({ userName }: IUsersListProps) {
   return (
     <$Container>
-      <UsersHeader />
+      <UsersHeader userName={userName} />
       <UserSearch />
       <Users />
     </$Container>

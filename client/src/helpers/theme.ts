@@ -83,14 +83,20 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          backgroundColor: '#47e7e7',
-          color: 'rgba(255,255,255,.9)',
+          backgroundColor: '#47e7e7a6',
+          color: 'rgba(255,255,255)',
           textTransform: 'none',
-          margin: '0 8px',
           padding: '4px 12px',
           minWidth: '100px',
+          borderRadius:'20px',
+          '&.MuiButton-text, &.MuiButton-text:hover':{
+            backgroundColor:'transparent',
+            textDecoration:'underline',
+            color: '#47e7e7',
+            marginLeft:'-16px'
+          },
           '&:hover': {
-            backgroundColor: '#47e7e7',
+            backgroundColor: '#47e7e7a6',
           },
         },
       },
@@ -182,7 +188,6 @@ const theme = createTheme({
         },
         input: {
           background: 'inherit',
-          borderRadius:'20px',
           color:'white',
         },
       },

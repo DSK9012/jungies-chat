@@ -1,8 +1,9 @@
+import { ChangeEvent, useEffect, useState } from 'react';
 import { styled } from '@mui/material';
-import { useEffect } from 'react';
 import io from 'socket.io-client';
 import ChatContent from 'components/ChatContent';
 import UsersList from 'components/UsersList';
+import LoginPage from 'components/LoginPage';
 
 const $Container = styled('div')(({ theme }) => ({
   height: '100vh',
@@ -62,6 +63,8 @@ const $GlassCircleGradient3 = styled('span')(() => ({
 }));
 
 function App() {
+  const [userName, setUserName] = useState<string>('');
+
   useEffect(() => {
     const socket = io('ws://localhost:5000/socket/one2one');
     socket.on('connect', () => {
@@ -73,11 +76,11 @@ function App() {
       });
       localStorage.debug = '*';
     });
-
-    socket.emit('sendMessage', 'sai');
-    socket.emit('sendMessage', 'sai1');
-    socket.emit('sendMessage', 'sai2');
   }, []);
+
+  const handleUserChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserName(event.target.value);
+  };
 
   return (
     <$Container>
@@ -86,8 +89,14 @@ function App() {
       <$GlassCircleGradient3 />
       <$Header>Jungies Chat</$Header>
       <$Content>
-        <UsersList />
-        <ChatContent />
+        {userName ? (
+          <>
+            <UsersList userName={userName} />
+            <ChatContent />
+          </>
+        ) : (
+          <LoginPage handleUserChange={handleUserChange} />
+        )}
       </$Content>
     </$Container>
   );

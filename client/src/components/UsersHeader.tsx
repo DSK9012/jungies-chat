@@ -13,10 +13,17 @@ const $UserImage = styled('img')(() => ({
   borderRadius: '50%',
 }));
 
-export default function UsersHeader() {
+interface IUsersHeaderProps {
+  userName: string;
+}
+
+export default function UsersHeader({ userName }: IUsersHeaderProps) {
   return (
     <$Container>
-      <$UserImage src={sai} width='50px' height='50px' />
+      <div>
+        {/* <$UserImage src={sai} width='50px' height='50px' /> */}
+        <h4>{userName}</h4>
+      </div>
       <MoreVertIcon />
     </$Container>
   );
