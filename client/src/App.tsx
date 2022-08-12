@@ -68,13 +68,25 @@ function App() {
   useEffect(() => {
     const socket = io('ws://localhost:5000/socket/one2one');
     socket.on('connect', () => {
-      const transport = socket.io.engine.transport.name; // in most cases, "polling"
-      console.log(transport);
+      const transport = socket.io.engine.transport.name; // in most cases, 'polling'
+      console.log(socket.id);
       socket.io.engine.on('upgrade', () => {
-        const upgradedTransport = socket.io.engine.transport.name; // in most cases, "websocket"
+        const upgradedTransport = socket.io.engine.transport.name; // in most cases, 'websocket'
         console.log(upgradedTransport);
       });
-      localStorage.debug = '*';
+    });
+
+    socket.emit('sendMessage', 'sai');
+    socket.on('receiveMessage', (data: any) => {
+      console.log(data);
+    });
+
+    socket.on('connect_error', (err) => {
+      console.log('Connection Error', err);
+    });
+
+    socket.onAny((event, ...args) => {
+      console.log('event logger', event, args);
     });
   }, []);
 
