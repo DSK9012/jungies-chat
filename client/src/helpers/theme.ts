@@ -127,7 +127,7 @@ const theme = createTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: '#70838f',
+          color: 'red',
           letterSpacing: '0.16px',
           fontSize: '16px',
           fontWeight: 500,
@@ -136,7 +136,7 @@ const theme = createTheme({
             color: '#70838f',
           },
           '&$shrink, &$shrink $asterisk': {
-            color: '#70838f',
+            color: 'red',
             letterSpacing: '0.4px',
             lineHeight: 1.33,
             fontWeight: 500,
@@ -166,10 +166,11 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            border: '1px solid silver',
+            borderColor: '#47e7e7',
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
             outline:'none',
+            borderColor: '#47e7e7',
           },
           '& .MuiInputBase-input.Mui-disabled': {
             color: '#70838f',
@@ -189,6 +190,10 @@ const theme = createTheme({
         input: {
           background: 'inherit',
           color:'white',
+          '&::placeholder':{
+            color:'white',
+            opacity:'.6'
+          }
         },
       },
     },

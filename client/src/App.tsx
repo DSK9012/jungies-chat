@@ -101,14 +101,14 @@ function App() {
       <$GlassCircleGradient3 />
       <$Header>Jungies Chat</$Header>
       <$Content>
-        {userName ? (
+        {/* {userName ? (
           <>
             <UsersList userName={userName} />
             <ChatContent />
           </>
         ) : (
-          <LoginPage handleUserChange={handleUserChange} />
-        )}
+          )} */}
+        <LoginPage handleUserChange={handleUserChange} />
       </$Content>
     </$Container>
   );
