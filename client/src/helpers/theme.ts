@@ -146,7 +146,7 @@ const theme = createTheme({
             color: '#47e7e7',
           },
           '&$error, &$error $asterisk': {
-            color: '#b00020',
+            color: '#ff7100',
             fontWeight: 500,
           },
         },
@@ -155,10 +155,12 @@ const theme = createTheme({
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          color: '#b00020',
           fontSize: '12px',
           fontWeight: 500,
           letterSpacing: '0.3px',
+          '& .css-ck2xp9-MuiFormHelperText-root.Mui-error':{
+            color: '#ff7100',
+          }
         },
       },
     },
@@ -179,7 +181,7 @@ const theme = createTheme({
             border: 'solid 1px rgba(0, 56, 101, 0.1)',
           },
           '&$error $notchedOutline, &$error:hover $notchedOutline': {
-            borderColor: '#e26262',
+            borderColor: '#ff7100',
           },
           fontSize: '16px',
         },

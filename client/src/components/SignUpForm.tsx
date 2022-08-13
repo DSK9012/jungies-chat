@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import {
   Avatar,
@@ -19,6 +19,9 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { FormTypes } from 'helpers/types';
+import useSignUpFormik, { SignUpFormik } from 'formik-config/SignUpUserFormik';
+import useFormikHelpers from 'formik-config/FormikHelpers';
+import TextFieldMaterial from 'helpers/CustomTextField';
 
 const $SignUpLink = styled('p')(({ theme }) => ({
   fontSize: '16px',
@@ -49,29 +52,71 @@ interface ISignupFormProps {
 }
 
 export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
+  const [imgPreview, setImgPreview] = useState<string | ArrayBuffer>();
+  const formik = useSignUpFormik();
+  const { userAvatar, userEmail, password, confirmPassword } = formik.values;
+  const { handleChangeAndBlur, hasError, getHelpText } = useFormikHelpers<SignUpFormik>(formik);
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    const file = event.target.files?.length && event.target.files[0];
+    if (reader && file) {
+      reader.onloadend = () => {
+        formik.setFieldValue(event.target.name, file);
+        setImgPreview(reader.result ?? '');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // const handleRemoveFile = (field) => {
+  //   formik.setFieldValue(field, '');
+  // };
+
   return (
     <>
       <$AvatarContainer>
-        <$FileLabel htmlFor='user-avatar'>
-          <input type='file' name='user-avatar' id='user-avatar' hidden />
+        <$FileLabel htmlFor='userAvatar'>
+          <input
+            type='file'
+            name='userAvatar'
+            id='userAvatar'
+            hidden
+            src={imgPreview?.toString()}
+            // value={userAvatar}
+            onChange={handleFileChange}
+          />
           <Badge
             overlap='circular'
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             badgeContent={
-              <InsertPhotoIcon
-                fontSize='small'
-                sx={{
-                  fontSize: '20px',
-                  backgroundColor: '#47e7e77d',
-                  borderRadius: '50%',
-                  padding: '2px',
-                }}
-              />
+              userAvatar ? (
+                <ModeEditIcon
+                  fontSize='small'
+                  sx={{
+                    fontSize: '20px',
+                    backgroundColor: '#47e7e7ba',
+                    borderRadius: '50%',
+                    padding: '2px',
+                  }}
+                  onClick={(event: MouseEvent) => event.preventDefault()}
+                />
+              ) : (
+                <InsertPhotoIcon
+                  fontSize='small'
+                  sx={{
+                    fontSize: '20px',
+                    backgroundColor: '#47e7e7ba',
+                    borderRadius: '50%',
+                    padding: '2px',
+                  }}
+                />
+              )
             }
           >
             <Avatar
               alt='User Avatar'
-              src=''
+              src={imgPreview?.toString()}
               sx={{
                 width: '65px',
                 height: '65px',
@@ -85,8 +130,8 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
         </$FileLabel>
       </$AvatarContainer>
       <br />
-      <TextField
-        placeholder='Email or Mobile Number'
+      <TextFieldMaterial
+        placeholder='Email'
         fullWidth
         size='small'
         spellCheck='false'
@@ -97,10 +142,18 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
             </InputAdornment>
           ),
         }}
-        // onChange={}
+        type='text'
+        title=''
+        name='userEmail'
+        value={userEmail}
+        onChange={handleChangeAndBlur('userEmail')}
+        error={hasError('userEmail')}
+        helperText={getHelpText('userEmail')}
+        formatOnBlur={undefined}
+        onBlur={undefined}
       />
       <br />
-      <TextField
+      <TextFieldMaterial
         spellCheck='false'
         placeholder='Password'
         fullWidth
@@ -112,9 +165,16 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
             </InputAdornment>
           ),
         }}
+        type='password'
+        title=''
+        name='password'
+        value={password}
+        onChange={handleChangeAndBlur('password')}
+        error={hasError('password')}
+        helperText={getHelpText('password')}
       />
       <br />
-      <TextField
+      <TextFieldMaterial
         spellCheck='false'
         placeholder='Confirm Password'
         fullWidth
@@ -126,6 +186,13 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
             </InputAdornment>
           ),
         }}
+        type='password'
+        title=''
+        name='confirmPassword'
+        value={confirmPassword}
+        onChange={handleChangeAndBlur('confirmPassword')}
+        error={hasError('confirmPassword')}
+        helperText={getHelpText('confirmPassword')}
       />
       <br />
       <Button fullWidth variant='contained'>
