@@ -29,7 +29,7 @@ const $SignUpLink = styled('p')(({ theme }) => ({
 }));
 
 const $AvatarContainer = styled('div')(({ theme }) => ({
-  margin: '0 auto',
+  margin: '0 auto 8px',
   border: '2.8px solid #47e7e7',
   borderRadius: '50%',
   padding: '2px',
@@ -47,35 +47,48 @@ const $FileLabel = styled('label')(({ theme }) => ({
   cursor: 'pointer',
 }));
 
+const $UserAvatarFieldError = styled('p')(({ theme }) => ({
+  color: '#ff7100',
+  fontSize: '14px',
+  fontWeight: 'bold',
+  marginBottom: '8px',
+}));
+
 interface ISignupFormProps {
   handleFormChange: (formType: FormTypes) => void;
 }
 
 export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
   const [imgPreview, setImgPreview] = useState<string | ArrayBuffer>();
+  const [validImg, setValidImg] = useState<boolean>(true);
   const formik = useSignUpFormik();
   const { userAvatar, userEmail, password, confirmPassword } = formik.values;
   const { handleChangeAndBlur, hasError, getHelpText } = useFormikHelpers<SignUpFormik>(formik);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValidImg(true);
     const reader = new FileReader();
     const file = event.target.files?.length && event.target.files[0];
     if (reader && file) {
+      reader.readAsDataURL(file);
       reader.onloadend = () => {
         formik.setFieldValue(event.target.name, file);
         setImgPreview(reader.result ?? '');
+        if (
+          file.size / 1024 > 500 ||
+          (file.type !== 'image/jpeg' && file.type !== 'image/jpg' && file.type !== 'image/png')
+        ) {
+          setValidImg(false);
+        }
       };
-      reader.readAsDataURL(file);
     }
   };
 
-  // const handleRemoveFile = (field) => {
-  //   formik.setFieldValue(field, '');
-  // };
-
   return (
     <>
-      <$AvatarContainer>
+      <$AvatarContainer
+        style={{ borderColor: validImg ? '#47e7e7' : '#ff7100', marginBottom: validImg ? '16px' : '8px' }}
+      >
         <$FileLabel htmlFor='userAvatar'>
           <input
             type='file'
@@ -83,14 +96,14 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
             id='userAvatar'
             hidden
             src={imgPreview?.toString()}
-            // value={userAvatar}
             onChange={handleFileChange}
+            accept='image/jpg,img/jpeg,img/png,.png,.jpg,.jpeg'
           />
           <Badge
             overlap='circular'
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             badgeContent={
-              userAvatar ? (
+              userAvatar && validImg ? (
                 <ModeEditIcon
                   fontSize='small'
                   sx={{
@@ -106,7 +119,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
                   fontSize='small'
                   sx={{
                     fontSize: '20px',
-                    backgroundColor: '#47e7e7ba',
+                    backgroundColor: validImg ? '#47e7e7ba' : '#ff7100ba',
                     borderRadius: '50%',
                     padding: '2px',
                   }}
@@ -129,7 +142,11 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
           </Badge>
         </$FileLabel>
       </$AvatarContainer>
-      <br />
+      {!validImg && (
+        <$UserAvatarFieldError>
+          Allowed image types are .jpg, jpeg, .png and size should not exceed 500 KB.
+        </$UserAvatarFieldError>
+      )}
       <TextFieldMaterial
         placeholder='Email'
         fullWidth
@@ -149,10 +166,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
         onChange={handleChangeAndBlur('userEmail')}
         error={hasError('userEmail')}
         helperText={getHelpText('userEmail')}
-        formatOnBlur={undefined}
-        onBlur={undefined}
       />
-      <br />
       <TextFieldMaterial
         spellCheck='false'
         placeholder='Password'
@@ -173,7 +187,6 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
         error={hasError('password')}
         helperText={getHelpText('password')}
       />
-      <br />
       <TextFieldMaterial
         spellCheck='false'
         placeholder='Confirm Password'
@@ -194,11 +207,16 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
         error={hasError('confirmPassword')}
         helperText={getHelpText('confirmPassword')}
       />
-      <br />
-      <Button fullWidth variant='contained'>
+      <Button
+        fullWidth
+        variant='contained'
+        disabled={!formik.dirty || !formik.isValid || !(userAvatar ? validImg : true)}
+        sx={{
+          margin: '8px 0',
+        }}
+      >
         Sign Up
       </Button>
-      <br />
       <$SignUpLink>
         Have Account?{' '}
         <Button size='small' disableRipple sx={{ fontSize: '16px' }} onClick={() => handleFormChange('sign-in-form')}>

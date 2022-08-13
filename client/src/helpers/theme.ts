@@ -11,7 +11,7 @@ const theme = createTheme({
     },
     action: {
       focus: 'silver',
-      hover: '#dd1a1a',
+      hover: 'green',
     },
   },
   spacing: 8,
@@ -98,8 +98,20 @@ const theme = createTheme({
           '&:hover': {
             backgroundColor: '#47e7e7a6',
           },
+          '&.Mui-disabled':{
+            backgroundColor: '#47e7e7a6',
+            cursor:'not-allowed',
+            color:'#ffffff75',
+          }
         },
       },
+    },
+    MuiFormControl:{
+      styleOverrides:{
+        root:{
+          margin:'4px 0'
+        }
+      }
     },
     MuiFormLabel: {
       styleOverrides: {
@@ -155,12 +167,12 @@ const theme = createTheme({
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          fontSize: '12px',
+          fontSize: '14px',
           fontWeight: 500,
           letterSpacing: '0.3px',
-          '& .css-ck2xp9-MuiFormHelperText-root.Mui-error':{
+          '&.Mui-error':{
             color: '#ff7100',
-          }
+          },
         },
       },
     },
@@ -174,13 +186,21 @@ const theme = createTheme({
             outline:'none',
             borderColor: '#47e7e7',
           },
+          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+            outline:'none',
+            borderColor: '#ff7100',
+          },
+          '&.Mui-error .MuiSvgIcon-root': {
+            outline:'none',
+            color: '#ff7100',
+          },
           '& .MuiInputBase-input.Mui-disabled': {
             color: '#70838f',
           },
           '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
             border: 'solid 1px rgba(0, 56, 101, 0.1)',
           },
-          '&$error $notchedOutline, &$error:hover $notchedOutline': {
+          '&$error $notchedOutline, &$error:hover .MuiOutlinedInput-notchedOutline': {
             borderColor: '#ff7100',
           },
           fontSize: '16px',

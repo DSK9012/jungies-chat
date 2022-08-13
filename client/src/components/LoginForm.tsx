@@ -23,10 +23,13 @@ const $Container = styled('div')(({ theme }) => ({
   borderBottomColor: 'rgb(255,255,255, 0.2)',
   borderRadius: '10px',
   padding: '16px',
-  overflow: 'hidden',
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
+  overflow: 'auto',
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
 }));
 
 interface ILoginFormProps {

@@ -26,7 +26,7 @@ function TextFieldMaterial(props: ICustomTextFieldProps) {
       variant='outlined'
       fullWidth
       spellCheck='false'
-      autoComplete='off'
+      autoComplete='on'
       onChange={handleChange}
       onBlur={() => {
         setIsError(true);
