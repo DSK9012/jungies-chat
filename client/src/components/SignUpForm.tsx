@@ -21,7 +21,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { FormTypes } from 'helpers/types';
 import useSignUpFormik, { SignUpFormik } from 'formik-config/SignUpUserFormik';
 import useFormikHelpers from 'formik-config/FormikHelpers';
-import TextFieldMaterial from 'helpers/CustomTextField';
+import CustomTextField from 'helpers/CustomTextField';
 
 const $SignUpLink = styled('p')(({ theme }) => ({
   fontSize: '16px',
@@ -147,7 +147,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
           Allowed image types are .jpg, jpeg, .png and size should not exceed 500 KB.
         </$UserAvatarFieldError>
       )}
-      <TextFieldMaterial
+      <CustomTextField
         placeholder='Email'
         fullWidth
         size='small'
@@ -167,7 +167,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
         error={hasError('userEmail')}
         helperText={getHelpText('userEmail')}
       />
-      <TextFieldMaterial
+      <CustomTextField
         spellCheck='false'
         placeholder='Password'
         fullWidth
@@ -187,7 +187,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
         error={hasError('password')}
         helperText={getHelpText('password')}
       />
-      <TextFieldMaterial
+      <CustomTextField
         spellCheck='false'
         placeholder='Confirm Password'
         fullWidth

@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import {
   Avatar,
   TextField,
@@ -16,6 +16,9 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { FormTypes } from 'helpers/types';
+import useFormikHelpers from 'formik-config/FormikHelpers';
+import useSignInFormik, { SignInFormik } from 'formik-config/SignInUserFormik';
+import CustomTextField from 'helpers/CustomTextField';
 
 const $SignUpLink = styled('p')(({ theme }) => ({
   fontSize: '16px',
@@ -42,6 +45,11 @@ interface ISignInFormProps {
 }
 
 export default function SignInForm({ handleUserChange, handleFormChange }: ISignInFormProps) {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const formik = useSignInFormik();
+  const { userEmail, password } = formik.values;
+  const { handleChangeAndBlur, hasError, getHelpText } = useFormikHelpers<SignInFormik>(formik);
+
   return (
     <>
       <$AvatarContainer>
@@ -59,8 +67,8 @@ export default function SignInForm({ handleUserChange, handleFormChange }: ISign
         </Avatar>
       </$AvatarContainer>
       <br />
-      <TextField
-        placeholder='Email or Mobile Number'
+      <CustomTextField
+        placeholder='Email'
         fullWidth
         size='small'
         spellCheck='false'
@@ -71,10 +79,15 @@ export default function SignInForm({ handleUserChange, handleFormChange }: ISign
             </InputAdornment>
           ),
         }}
-        onChange={handleUserChange}
+        type='text'
+        title=''
+        name='userEmail'
+        value={userEmail}
+        onChange={handleChangeAndBlur('userEmail')}
+        error={hasError('userEmail')}
+        helperText={getHelpText('userEmail')}
       />
-      <br />
-      <TextField
+      <CustomTextField
         spellCheck='false'
         placeholder='Password'
         fullWidth
@@ -86,10 +99,19 @@ export default function SignInForm({ handleUserChange, handleFormChange }: ISign
             </InputAdornment>
           ),
         }}
+        type={showPassword ? 'text' : 'password'}
+        title=''
+        name='password'
+        value={password}
+        onChange={handleChangeAndBlur('password')}
+        error={hasError('password')}
+        helperText={getHelpText('password')}
       />
       <FormGroup sx={{ margin: '0 0 16px 16px' }}>
         <FormControlLabel
           label='Show Password'
+          checked={showPassword}
+          onChange={() => setShowPassword((prevState) => !prevState)}
           control={
             <Checkbox
               size='small'
@@ -113,7 +135,7 @@ export default function SignInForm({ handleUserChange, handleFormChange }: ISign
           }}
         />
       </FormGroup>
-      <Button fullWidth variant='contained'>
+      <Button disabled={!formik.dirty || !formik.isValid} fullWidth variant='contained'>
         Sign In
       </Button>
       <br />

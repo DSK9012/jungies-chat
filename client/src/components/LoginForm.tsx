@@ -37,7 +37,7 @@ interface ILoginFormProps {
 }
 
 export default function LoginForm({ handleUserChange }: ILoginFormProps) {
-  const [selectedForm, setSelectedForm] = useState<FormTypes>('sign-up-form');
+  const [selectedForm, setSelectedForm] = useState<FormTypes>('sign-in-form');
 
   const handleFormChange = (formType: FormTypes) => {
     setSelectedForm(formType);

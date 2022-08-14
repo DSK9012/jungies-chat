@@ -1,31 +1,27 @@
 import { useFormik } from 'formik';
 import { object } from 'yup';
-import { signUpUserValidations } from './validations';
+import { signInUserValidations } from './validations';
 // import { useStore } from 'store/Store';
 
-export interface SignUpFormik{
+export interface SignInFormik{
   userEmail:string;
   password:string;
-  confirmPassword:string;
-  userAvatar:string;
 }
 
-export default function useSignUpFormik() {
+export default function useSignInFormik() {
   // const {
   //   booksContext: { addBook },
   // } = useStore();
 
-  return useFormik<SignUpFormik>({
+  return useFormik<SignInFormik>({
     initialValues: {
       userEmail: '',
       password:'',
-      confirmPassword:'',
-      userAvatar:'',
     },
     validateOnMount: true,
     validateOnChange: true,
     validateOnBlur: true,
-    validationSchema: object(signUpUserValidations),
+    validationSchema: object(signInUserValidations),
     onSubmit: (values, { resetForm, setSubmitting }) => {
       setSubmitting(true);
       // addBook(values, resetForm, setSubmitting);
