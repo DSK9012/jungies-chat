@@ -5,11 +5,14 @@ import theme from 'helpers/theme';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Store } from './store/Store';
 
 ReactDOM.render(
   <StrictMode>
     <ThemeProvider theme={theme}>
-      <App />
+      <Store>
+        <App />
+      </Store>
     </ThemeProvider>
   </StrictMode>,
   document.getElementById('root')

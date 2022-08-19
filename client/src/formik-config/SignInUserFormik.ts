@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
+import { useStore } from 'store/Store';
 import { object } from 'yup';
 import { signInUserValidations } from './validations';
-// import { useStore } from 'store/Store';
 
 export interface SignInFormik{
   userEmail:string;
@@ -9,9 +9,9 @@ export interface SignInFormik{
 }
 
 export default function useSignInFormik() {
-  // const {
-  //   booksContext: { addBook },
-  // } = useStore();
+  const {
+    userContext: { registerUser },
+  } = useStore();
 
   return useFormik<SignInFormik>({
     initialValues: {
@@ -24,7 +24,7 @@ export default function useSignInFormik() {
     validationSchema: object(signInUserValidations),
     onSubmit: (values, { resetForm, setSubmitting }) => {
       setSubmitting(true);
-      // addBook(values, resetForm, setSubmitting);
+      registerUser();
     },
   });
 }
