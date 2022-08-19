@@ -22,7 +22,7 @@ import CustomTextField from 'helpers/CustomTextField';
 
 const $SignUpLink = styled('p')(({ theme }) => ({
   fontSize: '16px',
-  marginLeft: '16px',
+  margin: '8px 0 0 16px',
 }));
 
 const $AvatarContainer = styled('div')(({ theme }) => ({
@@ -107,7 +107,7 @@ export default function SignInForm({ handleUserChange, handleFormChange }: ISign
         error={hasError('password')}
         helperText={getHelpText('password')}
       />
-      <FormGroup sx={{ margin: '0 0 16px 16px' }}>
+      <FormGroup sx={{ margin: '0 0 10px 16px' }}>
         <FormControlLabel
           label='Show Password'
           checked={showPassword}
@@ -138,7 +138,6 @@ export default function SignInForm({ handleUserChange, handleFormChange }: ISign
       <Button disabled={!formik.dirty || !formik.isValid} fullWidth variant='contained'>
         Sign In
       </Button>
-      <br />
       <$SignUpLink>
         New User?{' '}
         <Button size='small' disableRipple sx={{ fontSize: '16px' }} onClick={() => handleFormChange('sign-up-form')}>
