@@ -62,7 +62,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
   const [imgPreview, setImgPreview] = useState<string | ArrayBuffer>();
   const [validImg, setValidImg] = useState<boolean>(true);
   const formik = useSignUpFormik();
-  const { userAvatar, userEmail, password, confirmPassword } = formik.values;
+  const { userAvatar, email, password, confirmPassword } = formik.values;
   const { handleChangeAndBlur, hasError, getHelpText } = useFormikHelpers<SignUpFormik>(formik);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -161,11 +161,11 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
         }}
         type='text'
         title=''
-        name='userEmail'
-        value={userEmail}
-        onChange={handleChangeAndBlur('userEmail')}
-        error={hasError('userEmail')}
-        helperText={getHelpText('userEmail')}
+        name='email'
+        value={email}
+        onChange={handleChangeAndBlur('email')}
+        error={hasError('email')}
+        helperText={getHelpText('email')}
       />
       <CustomTextField
         spellCheck='false'

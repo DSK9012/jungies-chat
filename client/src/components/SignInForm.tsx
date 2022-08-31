@@ -47,7 +47,7 @@ interface ISignInFormProps {
 export default function SignInForm({ handleUserChange, handleFormChange }: ISignInFormProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const formik = useSignInFormik();
-  const { userEmail, password } = formik.values;
+  const { email, password } = formik.values;
   const { handleChangeAndBlur, hasError, getHelpText } = useFormikHelpers<SignInFormik>(formik);
 
   return (
@@ -81,11 +81,11 @@ export default function SignInForm({ handleUserChange, handleFormChange }: ISign
         }}
         type='text'
         title=''
-        name='userEmail'
-        value={userEmail}
-        onChange={handleChangeAndBlur('userEmail')}
-        error={hasError('userEmail')}
-        helperText={getHelpText('userEmail')}
+        name='email'
+        value={email}
+        onChange={handleChangeAndBlur('email')}
+        error={hasError('email')}
+        helperText={getHelpText('email')}
       />
       <CustomTextField
         spellCheck='false'

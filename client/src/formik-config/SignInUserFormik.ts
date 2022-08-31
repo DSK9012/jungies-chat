@@ -1,10 +1,10 @@
 import { useFormik } from 'formik';
-import { useStore } from 'store/Store';
 import { object } from 'yup';
+import { useStore } from 'store/Store';
 import { signInUserValidations } from './validations';
 
 export interface SignInFormik{
-  userEmail:string;
+  email:string;
   password:string;
 }
 
@@ -15,7 +15,7 @@ export default function useSignInFormik() {
 
   return useFormik<SignInFormik>({
     initialValues: {
-      userEmail: '',
+      email: '',
       password:'',
     },
     validateOnMount: true,

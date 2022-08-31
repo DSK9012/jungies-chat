@@ -4,7 +4,7 @@ import { signUpUserValidations } from './validations';
 // import { useStore } from 'store/Store';
 
 export interface SignUpFormik{
-  userEmail:string;
+  email:string;
   password:string;
   confirmPassword:string;
   userAvatar:string;
@@ -17,7 +17,7 @@ export default function useSignUpFormik() {
 
   return useFormik<SignUpFormik>({
     initialValues: {
-      userEmail: '',
+      email: '',
       password:'',
       confirmPassword:'',
       userAvatar:'',

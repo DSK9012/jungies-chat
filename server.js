@@ -7,6 +7,8 @@ const cors = require('cors');
 const serverConfig = require('./serverConfig');
 const morgan = require('morgan');
 const app = express();
+const path = require('path');
+const connectToMongoDB = require('./DBConnections');
 
 // Allow cors
 app.use(cors());
@@ -14,9 +16,13 @@ app.use(cors());
 // Http requests logger
 app.use(morgan('dev'));
 
+// Database Connection
+connectToMongoDB();
+
 // Intializing express middleware to parse the data in req object
 app.use(express.json({ extended: false }));
 
+app.use('/api', require('./routes/users/usersRouter'));
 app.use('/', (req, res) => {
   res.send('Chat Server');
 });
