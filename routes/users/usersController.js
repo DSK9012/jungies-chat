@@ -4,11 +4,11 @@ const jwt = require('jsonwebtoken');
 const User = require('./usersEntity');
 
 const userController = {
-  getUser: async (userId, successCB, errorCB) => {
+  getUser: async (user, successCB, errorCB) => {
     try {
-      const user = await User.findById(userId).select('-password');
-      successCB(user);
-      // res.json(user);
+      const userInfo = await User.findById(user.id).select('-password');
+      successCB(userInfo);
+      // res.json(userInfo);
     } catch (error) {
       errorCB(error.message);
       // res.status(500).send('Server error');
