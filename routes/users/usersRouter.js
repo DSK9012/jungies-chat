@@ -3,6 +3,8 @@ const router = express.Router();
 const { check } = require('express-validator');
 const auth = require('../../middlewares/authToken');
 const userController = require('./usersController');
+const multer = require('multer');
+const upload = multer();
 
 //  @route GET /user
 //  @desc Get and verify user on every req
@@ -30,6 +32,7 @@ router.get('/user', auth, async (req, res) => {
 //  @access Public
 router.post(
   '/user/register',
+  upload.single('avatar'),
   [
     check('name', 'User name is required').not().isEmpty(),
     check('email', 'email is required').not().isEmpty(),

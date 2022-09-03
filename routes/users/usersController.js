@@ -15,6 +15,7 @@ const userController = {
     }
   },
   registeruser: async (req, res, successCB, errorCB) => {
+    console.log(req);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       errorCB({ errors: errors.array() });
@@ -37,11 +38,21 @@ const userController = {
       }
 
       // creating user object
-      const user = new User({
-        name,
-        email,
-        password,
-      });
+      let user;
+      if (req.file) {
+        user = new User({
+          name,
+          email,
+          password,
+          avatar: req.file.buffer,
+        });
+      } else {
+        user = new User({
+          name,
+          email,
+          password,
+        });
+      }
 
       // hashing the password before saving it in DB
       const salt = await bcrypt.genSalt(10);
