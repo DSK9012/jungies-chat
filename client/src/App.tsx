@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import ChatContent from 'components/ChatContent';
 import UsersList from 'components/UsersList';
 import LoginPage from 'components/LoginPage';
+import { useStore } from 'store/Store';
 
 const $Container = styled('div')(({ theme }) => ({
   height: '100vh',
@@ -63,36 +64,31 @@ const $GlassCircleGradient3 = styled('span')(() => ({
 }));
 
 function App() {
-  const [userName, setUserName] = useState<string>('');
+  const {
+    userContext: { isAuthenticated },
+  } = useStore();
 
   useEffect(() => {
-    const socket = io('ws://localhost:5000/socket/one2one');
-    socket.on('connect', () => {
-      const transport = socket.io.engine.transport.name; // in most cases, 'polling'
-      console.log(socket.id);
-      socket.io.engine.on('upgrade', () => {
-        const upgradedTransport = socket.io.engine.transport.name; // in most cases, 'websocket'
-        console.log(upgradedTransport);
-      });
-    });
-
-    socket.emit('sendMessage', 'sai');
-    socket.on('receiveMessage', (data: any) => {
-      console.log(data);
-    });
-
-    socket.on('connect_error', (err) => {
-      console.log('Connection Error', err);
-    });
-
-    socket.onAny((event, ...args) => {
-      console.log('event logger', event, args);
-    });
+    // const socket = io('ws://localhost:5000/socket/one2one');
+    // socket.on('connect', () => {
+    //   const transport = socket.io.engine.transport.name; // in most cases, 'polling'
+    //   console.log(socket.id);
+    //   socket.io.engine.on('upgrade', () => {
+    //     const upgradedTransport = socket.io.engine.transport.name; // in most cases, 'websocket'
+    //     console.log(upgradedTransport);
+    //   });
+    // });
+    // socket.emit('sendMessage', 'sai');
+    // socket.on('receiveMessage', (data: any) => {
+    //   console.log(data);
+    // });
+    // socket.on('connect_error', (err) => {
+    //   console.log('Connection Error', err);
+    // });
+    // socket.onAny((event, ...args) => {
+    //   console.log('event logger', event, args);
+    // });
   }, []);
-
-  const handleUserChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUserName(event.target.value);
-  };
 
   return (
     <$Container>
@@ -101,14 +97,14 @@ function App() {
       <$GlassCircleGradient3 />
       <$Header>Jungies Chat</$Header>
       <$Content>
-        {/* {userName ? (
+        {isAuthenticated ? (
           <>
-            <UsersList userName={userName} />
+            <UsersList />
             <ChatContent />
           </>
         ) : (
-          )} */}
-        <LoginPage handleUserChange={handleUserChange} />
+          <LoginPage />
+        )}
       </$Content>
     </$Container>
   );

@@ -34,10 +34,8 @@ router.post(
   '/user/register',
   upload.single('avatar'),
   [
-    check('name', 'User name is required').not().isEmpty(),
     check('email', 'email is required').not().isEmpty(),
     check('password', 'Password is required').not().isEmpty(),
-    check('name', 'Must be greater than 3 and less than 20 characters').isLength({ min: 3, max: 20 }),
     check('email', 'Plesae enter a valid mail').isEmail(),
     check('password', 'Must be greater than 6 and less than 20 characters').isLength({ min: 6, max: 20 }),
   ],

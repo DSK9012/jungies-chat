@@ -32,11 +32,7 @@ const $Container = styled('div')(({ theme }) => ({
   },
 }));
 
-interface ILoginFormProps {
-  handleUserChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}
-
-export default function LoginForm({ handleUserChange }: ILoginFormProps) {
+export default function LoginForm() {
   const [selectedForm, setSelectedForm] = useState<FormTypes>('sign-in-form');
 
   const handleFormChange = (formType: FormTypes) => {
@@ -46,7 +42,7 @@ export default function LoginForm({ handleUserChange }: ILoginFormProps) {
   return (
     <$Container>
       {selectedForm === 'sign-in-form' ? (
-        <SignInForm handleUserChange={handleUserChange} handleFormChange={handleFormChange} />
+        <SignInForm handleFormChange={handleFormChange} />
       ) : (
         <SignUpForm handleFormChange={handleFormChange} />
       )}

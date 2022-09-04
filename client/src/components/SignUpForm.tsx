@@ -62,7 +62,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
   const [imgPreview, setImgPreview] = useState<string | ArrayBuffer>();
   const [validImg, setValidImg] = useState<boolean>(true);
   const formik = useSignUpFormik();
-  const { userAvatar, email, password, confirmPassword } = formik.values;
+  const { avatar, email, password, confirmPassword, name } = formik.values;
   const { handleChangeAndBlur, hasError, getHelpText } = useFormikHelpers<SignUpFormik>(formik);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -84,16 +84,20 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
     }
   };
 
+  const handleSubmit = () => {
+    if (formik.isValid && formik.dirty) formik.submitForm();
+  };
+
   return (
     <>
       <$AvatarContainer
         style={{ borderColor: validImg ? '#47e7e7' : '#ff7100', marginBottom: validImg ? '16px' : '8px' }}
       >
-        <$FileLabel htmlFor='userAvatar'>
+        <$FileLabel htmlFor='avatar'>
           <input
             type='file'
-            name='userAvatar'
-            id='userAvatar'
+            name='avatar'
+            id='avatar'
             hidden
             src={imgPreview?.toString()}
             onChange={handleFileChange}
@@ -103,7 +107,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
             overlap='circular'
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             badgeContent={
-              userAvatar && validImg ? (
+              avatar && validImg ? (
                 <ModeEditIcon
                   fontSize='small'
                   sx={{
@@ -147,6 +151,26 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
           Allowed image types are .jpg, jpeg, .png and size should not exceed 500 KB.
         </$UserAvatarFieldError>
       )}
+      <CustomTextField
+        placeholder='Display Name'
+        fullWidth
+        size='small'
+        spellCheck='false'
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position='start'>
+              <PersonIcon htmlColor='#47e7e7' fontSize='small' />
+            </InputAdornment>
+          ),
+        }}
+        type='text'
+        title=''
+        name='name'
+        value={name}
+        onChange={handleChangeAndBlur('name')}
+        error={hasError('name')}
+        helperText={getHelpText('name')}
+      />
       <CustomTextField
         placeholder='Email'
         fullWidth
@@ -210,10 +234,11 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
       <Button
         fullWidth
         variant='contained'
-        disabled={!formik.dirty || !formik.isValid || !(userAvatar ? validImg : true)}
+        disabled={!formik.dirty || !formik.isValid || !(avatar ? validImg : true)}
         sx={{
           margin: '8px 0',
         }}
+        onClick={handleSubmit}
       >
         Sign Up
       </Button>

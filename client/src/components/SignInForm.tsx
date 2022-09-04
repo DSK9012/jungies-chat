@@ -40,11 +40,10 @@ const $SocialLogin = styled('div')(({ theme }) => ({
 }));
 
 interface ISignInFormProps {
-  handleUserChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleFormChange: (formType: FormTypes) => void;
 }
 
-export default function SignInForm({ handleUserChange, handleFormChange }: ISignInFormProps) {
+export default function SignInForm({ handleFormChange }: ISignInFormProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const formik = useSignInFormik();
   const { email, password } = formik.values;

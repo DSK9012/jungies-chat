@@ -1,6 +1,7 @@
 import { styled } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import sai from 'assets/sai.jpg';
+import { useStore } from 'store/Store';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
@@ -9,21 +10,31 @@ const $Container = styled('div')(() => ({
   padding: '4px 10px',
 }));
 
+const $UserInfo = styled('div')(() => ({
+  display: 'flex',
+  alignItems: 'center',
+}));
+
 const $UserImage = styled('img')(() => ({
   borderRadius: '50%',
 }));
 
-interface IUsersHeaderProps {
-  userName: string;
-}
+const $UserName = styled('h4')(() => ({
+  marginLeft: '8px',
+  textTransform: 'capitalize',
+}));
 
-export default function UsersHeader({ userName }: IUsersHeaderProps) {
+export default function UsersHeader() {
+  const {
+    userContext: { userName, avatar },
+  } = useStore();
+
   return (
     <$Container>
-      <div>
-        {/* <$UserImage src={sai} width='50px' height='50px' /> */}
-        <h4>{userName}</h4>
-      </div>
+      <$UserInfo>
+        <$UserImage src={avatar} width='50px' height='50px' />
+        <$UserName>{userName}</$UserName>
+      </$UserInfo>
       <MoreVertIcon />
     </$Container>
   );

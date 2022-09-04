@@ -4,7 +4,6 @@ const userEntity = mongoose.Schema({
   name: {
     type: String,
     default: '',
-    require: true,
     trim: true,
   },
   email: {

@@ -25,15 +25,11 @@ const $Img = styled('img')(({ theme }) => ({
   margin: '0 auto',
 }));
 
-interface ILoginPageProps {
-  handleUserChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}
-
-export default function LoginPage({ handleUserChange }: ILoginPageProps) {
+export default function LoginPage() {
   return (
     <$Container>
       <$Img src={chatImg} alt='chat image' />
-      <LoginForm handleUserChange={handleUserChange} />
+      <LoginForm />
     </$Container>
   );
 }

@@ -24,7 +24,7 @@ export default function useSignInFormik() {
     validationSchema: object(signInUserValidations),
     onSubmit: (values, { resetForm, setSubmitting }) => {
       setSubmitting(true);
-      registerUser();
+      // registerUser();
     },
   });
 }
