@@ -49,6 +49,10 @@ export default function SignInForm({ handleFormChange }: ISignInFormProps) {
   const { email, password } = formik.values;
   const { handleChangeAndBlur, hasError, getHelpText } = useFormikHelpers<SignInFormik>(formik);
 
+  const handleSubmit = () => {
+    if (formik.isValid && formik.dirty) formik.submitForm();
+  };
+
   return (
     <>
       <$AvatarContainer>
@@ -134,7 +138,7 @@ export default function SignInForm({ handleFormChange }: ISignInFormProps) {
           }}
         />
       </FormGroup>
-      <Button disabled={!formik.dirty || !formik.isValid} fullWidth variant='contained'>
+      <Button disabled={!formik.dirty || !formik.isValid} fullWidth variant='contained' onClick={handleSubmit}>
         Sign In
       </Button>
       <$SignUpLink>

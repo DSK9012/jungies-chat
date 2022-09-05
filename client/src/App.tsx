@@ -5,6 +5,7 @@ import ChatContent from 'components/ChatContent';
 import UsersList from 'components/UsersList';
 import LoginPage from 'components/LoginPage';
 import { useStore } from 'store/Store';
+import setAuthToken from 'helpers/set-auth-token';
 
 const $Container = styled('div')(({ theme }) => ({
   height: '100vh',
@@ -63,9 +64,11 @@ const $GlassCircleGradient3 = styled('span')(() => ({
   top: '5%',
 }));
 
+if (localStorage.getItem('token')) setAuthToken(localStorage.getItem('token'));
+
 function App() {
   const {
-    userContext: { isAuthenticated },
+    userContext: { isAuthenticated, userLoading, getUser },
   } = useStore();
 
   useEffect(() => {
@@ -88,7 +91,8 @@ function App() {
     // socket.onAny((event, ...args) => {
     //   console.log('event logger', event, args);
     // });
-  }, []);
+    if (!isAuthenticated) getUser();
+  }, [isAuthenticated]);
 
   return (
     <$Container>
@@ -97,14 +101,15 @@ function App() {
       <$GlassCircleGradient3 />
       <$Header>Jungies Chat</$Header>
       <$Content>
-        {isAuthenticated ? (
-          <>
-            <UsersList />
-            <ChatContent />
-          </>
-        ) : (
-          <LoginPage />
-        )}
+        {!userLoading &&
+          (isAuthenticated ? (
+            <>
+              <UsersList />
+              <ChatContent />
+            </>
+          ) : (
+            <LoginPage />
+          ))}
       </$Content>
     </$Container>
   );

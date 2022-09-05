@@ -73,4 +73,17 @@ router.post(
   }
 );
 
+router.get('/user/avatar/:userId', async (req, res) => {
+  try {
+    userController.sendAvatar(
+      req,
+      res,
+      (avatar) => res.send(avatar),
+      (error) => res.status(404).json(error)
+    );
+  } catch (error) {
+    return res.status(500).json('Internal server error');
+  }
+});
+
 module.exports = router;

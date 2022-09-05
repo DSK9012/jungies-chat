@@ -26,14 +26,14 @@ const $UserName = styled('h4')(() => ({
 
 export default function UsersHeader() {
   const {
-    userContext: { userName, avatar },
+    userContext: { userInfo },
   } = useStore();
 
   return (
     <$Container>
       <$UserInfo>
-        <$UserImage src={avatar} width='50px' height='50px' />
-        <$UserName>{userName}</$UserName>
+        <$UserImage src={`http://localhost:5000/api/user/avatar/${userInfo.id}`} width='50px' height='50px' />
+        <$UserName>{userInfo.userName}</$UserName>
       </$UserInfo>
       <MoreVertIcon />
     </$Container>

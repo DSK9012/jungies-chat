@@ -7,10 +7,10 @@ const userController = {
   getUser: async (user, successCB, errorCB) => {
     try {
       const userInfo = await User.findById(user.id).select('-password');
-      successCB(userInfo);
+      return successCB(userInfo);
       // res.json(userInfo);
     } catch (error) {
-      errorCB(error.message);
+      return errorCB(error.message);
       // res.status(500).send('Server error');
     }
   },
@@ -21,7 +21,7 @@ const userController = {
       return errorCB({ errors: errors.array() });
       // return res.status(400).json({ errors: errors.array() });
     }
-    const { email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
     try {
       // see user existed or not
@@ -41,12 +41,14 @@ const userController = {
       let user;
       if (req?.file?.buffer) {
         user = new User({
+          name,
           email,
           password,
           avatar: req.file.buffer,
         });
       } else {
         user = new User({
+          name,
           email,
           password,
         });
@@ -71,7 +73,7 @@ const userController = {
       jwt.sign(payload, 'myjwtsecret', { expiresIn: 3600 }, (error, token) => {
         if (error) throw error;
         // res.json({ token });
-        return successCB({ token });
+        return successCB({ id: user.id, token });
       });
     } catch (error) {
       console.error(error.message);
@@ -112,13 +114,22 @@ const userController = {
       jwt.sign(payload, 'myjwtsecret', { expiresIn: 3600 }, (error, token) => {
         if (error) throw error;
         // res.json({ token });
-        successCB({ token });
+        successCB({ id: checkUser.id, token });
       });
     } catch (error) {
       console.error('sai');
       errorCB('server error');
       // res.status(500).send('Server error');
     }
+  },
+  sendAvatar: async (req, res, successCB, errorCB) => {
+    try {
+      const user = await User.findById(req.params.userId);
+      if (!user || !user.avatar) throw new Error('User not found');
+
+      res.set('Content-Type', 'image/jpg');
+      return successCB(user.avatar);
+    } catch (error) {}
   },
 };
 
