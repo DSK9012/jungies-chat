@@ -1,30 +1,35 @@
 const mongoose = require('mongoose');
 
-const userEntity = mongoose.Schema({
-  name: {
-    type: String,
-    default: '',
-    trim: true,
+const userEntity = mongoose.Schema(
+  {
+    name: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    email: {
+      type: String,
+      default: '',
+      trim: true,
+      require: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      trim: true,
+      require: true,
+      default: '',
+    },
+    avatar: {
+      type: Buffer,
+      trim: true,
+      default: '',
+      alias: 'userImage',
+    },
   },
-  email: {
-    type: String,
-    default: '',
-    trim: true,
-    require: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    trim: true,
-    require: true,
-    default: '',
-  },
-  avatar: {
-    type: Buffer,
-    trim: true,
-    default: '',
-    alias: 'userImage',
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 module.exports = mongoose.model('users', userEntity);
