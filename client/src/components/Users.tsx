@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import { styled } from '@mui/material';
 import sai from 'assets/sai.jpg';
+import { useStore } from 'store/Store';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
@@ -37,106 +39,117 @@ const $LastMessage = styled('p')(() => ({
 }));
 
 export default function Users() {
+  const {
+    userContext: { searchedUsers },
+  } = useStore();
+
   return (
     <$Container>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
+      {searchedUsers.length > 0 ? (
+        searchedUsers.map((user) => (
+          <$UserContainer>
+            <$UserImage src={`http://localhost:5000/api/user/avatar/${user._id}`} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>{user.name}</$UserName>
+              <$LastMessage>searched user</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+        ))
+      ) : (
+        <>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+          <$UserContainer>
+            <$UserImage src={sai} width='50px' height='50px' />
+            <$UserInfo>
+              <$UserName>Sai</$UserName>
+              <$LastMessage>This is the last message</$LastMessage>
+            </$UserInfo>
+          </$UserContainer>
+        </>
+      )}
     </$Container>
   );
 }

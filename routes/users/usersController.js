@@ -65,7 +65,7 @@ const userController = {
       const payload = {
         user: {
           id: user.id,
-          name: user.email,
+          name: user.name,
         },
       };
 
@@ -92,14 +92,14 @@ const userController = {
       // see user existed or not
       const checkUser = await User.findOne({ email });
       if (!checkUser) {
-        errorCB({ errors: [{ msg: 'No user found with this mail' }] });
+        return errorCB({ errors: [{ msg: 'No user found with this mail' }] });
         // return res.status(400).json({ errors: [{ msg: 'No user found with this mail' }] });
       }
 
       // checking password
       const isMatched = await bcrypt.compare(password, checkUser.password);
       if (!isMatched) {
-        errorCB({ errors: [{ msg: 'Wrong password' }] });
+        return errorCB({ errors: [{ msg: 'Wrong password' }] });
         // return res.status(400).json({ errors: [{ msg: 'Wrong password' }] });
       }
 
@@ -107,6 +107,7 @@ const userController = {
       const payload = {
         user: {
           id: checkUser.id,
+          name: checkUser.name,
         },
       };
 
@@ -114,11 +115,11 @@ const userController = {
       jwt.sign(payload, 'myjwtsecret', { expiresIn: 3600 }, (error, token) => {
         if (error) throw error;
         // res.json({ token });
-        successCB({ id: checkUser.id, token });
+        return successCB({ id: checkUser.id, token });
       });
     } catch (error) {
       console.error('sai');
-      errorCB('server error');
+      return errorCB('server error');
       // res.status(500).send('Server error');
     }
   },
@@ -129,7 +130,19 @@ const userController = {
 
       res.set('Content-Type', 'image/jpg');
       return successCB(user.avatar);
-    } catch (error) {}
+    } catch (error) {
+      return errorCB(error);
+    }
+  },
+  searchUsers: async (req, res, successCB, errorCB) => {
+    try {
+      console.log(req.query);
+      const query = new RegExp(req.query.search, 'i');
+      const users = await User.find({ name: query }).select('-password').select('-avatar');
+      return successCB(users);
+    } catch (error) {
+      return errorCB(error);
+    }
   },
 };
 

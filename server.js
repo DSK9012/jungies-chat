@@ -7,8 +7,10 @@ const cors = require('cors');
 const serverConfig = require('./serverConfig');
 const morgan = require('morgan');
 const app = express();
-const path = require('path');
 const connectToMongoDB = require('./DBConnections');
+const socketAuth = require('./middlewares/socket-auth-validation');
+const { PRIVATE_CHAT } = require('./namespaces');
+const contactEntity = require('./routes/contacts/contactEntity');
 
 // Allow cors
 app.use(cors());
@@ -23,32 +25,41 @@ connectToMongoDB();
 app.use(express.json({ extended: false }));
 
 app.use('/api', require('./routes/users/usersRouter'));
-app.use('/', (req, res) => {
-  res.send('Chat Server');
-});
 
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+  },
   allowUpgrades: true,
   transports: ['polling', 'websocket'],
 });
 
-io.use((socket, next) => {
-  // const username = socket.handshake.auth.username;
-  // if (!username) {
-  //   return next(new Error("invalid username"));
-  // }
-  // socket.username = username;
-  next();
+// Socket middleware
+io.of(PRIVATE_CHAT).use((socket, next) => {
+  socketAuth(socket, next);
 });
 
-io.of('/socket/one2one').on('connection', (socket) => {
-  console.log(io.of('/socket/one2one').sockets.size);
-  socket.on('sendMessage', (msg) => {
-    socket.conn.on('upgrade', () => {
-      const upgradedTransport = socket.conn.transport.name;
-    });
-  });
+io.of(PRIVATE_CHAT).on('connection', async (socket) => {
+  console.log(socket.user);
+
+  const contacts = await contactEntity.find({ userId: socket.user.id });
+  console.log('contacts', contacts);
+  socket.emit('contacts', contacts);
+  //  async () => {
+  //   try {
+  //     // const activeUsers
+  //     // for (let [id, socket] of io.of("/").sockets) {
+  //     //   console.log(socket.username),
+  //     //   if(socket.id===){
+
+  //     //   }
+  //     // }
+  //     return [{ a: 1 }];
+  //   } catch (error) {}
+  // });
+
+  socket.on('sendMessage', (msg) => {});
 });
 
 const serverPort = serverConfig.serverPort;

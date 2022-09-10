@@ -1,5 +1,6 @@
 import { Search } from '@mui/icons-material';
 import { InputAdornment, styled, TextField } from '@mui/material';
+import { useStore } from 'store/Store';
 
 const $Container = styled('div')(() => ({
   padding: '4px 12px',
@@ -7,12 +8,16 @@ const $Container = styled('div')(() => ({
 }));
 
 export default function UserSearch() {
+  const {
+    userContext: { searchUsers },
+  } = useStore();
+
   return (
     <$Container>
       <TextField
         size='small'
         fullWidth
-        placeholder='search user to start chat'
+        placeholder='Search user to start chat'
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
@@ -20,6 +25,7 @@ export default function UserSearch() {
             </InputAdornment>
           ),
         }}
+        onChange={searchUsers}
       />
     </$Container>
   );

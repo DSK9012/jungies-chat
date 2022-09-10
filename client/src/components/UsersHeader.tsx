@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { styled } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import sai from 'assets/sai.jpg';
@@ -32,8 +33,8 @@ export default function UsersHeader() {
   return (
     <$Container>
       <$UserInfo>
-        <$UserImage src={`http://localhost:5000/api/user/avatar/${userInfo.id}`} width='50px' height='50px' />
-        <$UserName>{userInfo.userName}</$UserName>
+        <$UserImage src={`http://localhost:5000/api/user/avatar/${userInfo._id}`} width='50px' height='50px' />
+        <$UserName>{userInfo.name}</$UserName>
       </$UserInfo>
       <MoreVertIcon />
     </$Container>

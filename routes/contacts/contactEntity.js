@@ -30,6 +30,14 @@ const contactEntity = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    active: {
+      type: Boolean,
+      required: true,
+    },
+    lastActive: {
+      type: Date,
+      required: true,
+    },
   },
   { timestamps: true }
 );

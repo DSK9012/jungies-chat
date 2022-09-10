@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
-const auth = require('../../middlewares/authToken');
+const auth = require('../../middlewares/rest-auth-validation');
 const userController = require('./usersController');
 const multer = require('multer');
 const upload = multer();
@@ -79,6 +79,19 @@ router.get('/user/avatar/:userId', async (req, res) => {
       req,
       res,
       (avatar) => res.send(avatar),
+      (error) => res.status(404).json(error)
+    );
+  } catch (error) {
+    return res.status(500).json('Internal server error');
+  }
+});
+
+router.post('/user/search', async (req, res) => {
+  try {
+    userController.searchUsers(
+      req,
+      res,
+      (users) => res.send(users),
       (error) => res.status(404).json(error)
     );
   } catch (error) {
