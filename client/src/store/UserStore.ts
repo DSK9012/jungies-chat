@@ -1,32 +1,49 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from 'axios';
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { SignInFormik } from 'formik-config/SignInUserFormik';
 import setAuthToken from 'helpers/set-auth-token';
 
-interface IContact{
-  _id:string;
-  name:string;
-  email:string;
+export interface IUser{
+  _id: string;
+  name: string;
+  email: string;
+  active:boolean;
+  lastActive:string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface IContact extends IUser{
   lastMessage:string;
-  createdAt:string;
-  updatedAt:string;
   chatId:string;
   userId:string;
   contactUserId:string;
   unreadNotifications:number;
 }
 
-interface IUser{
-  _id: string;
-  name: string;
-  email: string;
-  createdAt: string;
-  updatedAt: string;
-};
 
 interface IUserInfo extends IUser {
   contacts: IContact[];
+}
+
+interface IMessage{
+  _id:string;
+  chatId:string;
+  sentBy:{
+    userId:string;
+    name:string;
+  };
+  sentTo:{
+    userId:string;
+    name:string;
+  },
+  message:string;
+  status:['SENT', 'DELIVERED', 'READ'];
+}
+
+interface ISelectedUser extends IContact {
+  messages: IMessage[];
 }
 
 export interface IUserStore {
@@ -34,10 +51,14 @@ export interface IUserStore {
   userLoading: boolean;
   userInfo: IUserInfo;
   searchedUsers:IUser[];
+  selectedUser:ISelectedUser | null;
   registerUser: (data: FormData, resetForm: () => void) => void;
   loginUser: (data: SignInFormik, resetForm: () => void) => void;
   getUser: () => void;
   searchUsers: (event:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
+  setSearchedUsers:Dispatch<SetStateAction<IUser[]>>;
+  setSelectedUser: Dispatch<SetStateAction<ISelectedUser | null>>;
+  setUserInfo: Dispatch<SetStateAction<IUserInfo>>;
 }
 
 export const userStoreInitialState = {
@@ -47,15 +68,21 @@ export const userStoreInitialState = {
     _id: '',
     name: '',
     email: '',
+    active:false,
+    lastActive:'',
     createdAt:'',
     updatedAt:'',
     contacts:[],
   },
   searchedUsers:[],
+  selectedUser: null,
   registerUser: () => undefined,
   loginUser: () => undefined,
   getUser: () => undefined,
   searchUsers: () => undefined,
+  setSearchedUsers: () => undefined,
+  setSelectedUser: () => undefined,
+  setUserInfo: () => undefined,
 };
 
 export const userStore = () => {
@@ -63,6 +90,7 @@ export const userStore = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(userStoreInitialState.isAuthenticated);
   const [userInfo, setUserInfo] = useState<IUserInfo>(userStoreInitialState.userInfo);
   const [searchedUsers, setSearchedUsers] = useState<IUser[]>(userStoreInitialState.searchedUsers);
+  const [selectedUser, setSelectedUser] = useState<ISelectedUser | null>(userStoreInitialState.selectedUser);
 
   const registerUser = async (userData: FormData, resetForm: () => void) => {
     try {
@@ -133,6 +161,10 @@ export const userStore = () => {
     userInfo,
     userLoading,
     searchedUsers,
+    selectedUser,
+    setSelectedUser,
+    setUserInfo,
+    setSearchedUsers,
     registerUser,
     loginUser,
     getUser,

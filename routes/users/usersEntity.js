@@ -26,6 +26,15 @@ const userEntity = mongoose.Schema(
       default: '',
       alias: 'userImage',
     },
+    active: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    lastActive: {
+      type: Date,
+      required: true,
+    },
   },
   {
     timestamps: true,

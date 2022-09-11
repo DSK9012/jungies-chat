@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import ChatContent from 'components/ChatContent';
-import UsersList from 'components/UsersList';
+import UsersList from 'components/sidebar/UsersList';
 import { socket } from 'helpers/socket';
 
 const PrivatePage = () => {

@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import { styled } from '@mui/material';
 import sai from 'assets/sai.jpg';
+import { useStore } from 'store/Store';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
@@ -25,12 +27,19 @@ const $LastMessage = styled('p')(() => ({
 }));
 
 export default function UserChatHeader() {
+  const {
+    userContext: { selectedUser },
+  } = useStore();
+  if (!selectedUser) {
+    return <h3>Select user to start chat</h3>;
+  }
+
   return (
     <$Container>
-      <$UserImage src={sai} width='50px' height='50px' />
+      <$UserImage src={`http://localhost:5000/api/user/avatar/${selectedUser._id}`} width='50px' height='50px' />
       <$UserInfo>
-        <$UserName>Sai</$UserName>
-        <$LastMessage>This is the last message</$LastMessage>
+        <$UserName>{selectedUser.name}</$UserName>
+        <$LastMessage>{selectedUser.lastMessage}</$LastMessage>
       </$UserInfo>
     </$Container>
   );
