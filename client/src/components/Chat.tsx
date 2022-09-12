@@ -44,7 +44,7 @@ export default function Chat() {
   if (!selectedUser) {
     return <h3>No messages yet.</h3>;
   }
-
+  console.log(selectedUser);
   return (
     <$Container>
       {selectedUser.messages.map((message) => (

@@ -136,7 +136,6 @@ const userController = {
   },
   searchUsers: async (req, res, successCB, errorCB) => {
     try {
-      console.log(req.query);
       const query = new RegExp(req.query.search, 'i');
       const users = await User.find({ name: query }).select('-password').select('-avatar');
       return successCB(users);

@@ -29,11 +29,9 @@ const userEntity = mongoose.Schema(
     active: {
       type: Boolean,
       default: false,
-      required: true,
     },
     lastActive: {
       type: Date,
-      required: true,
     },
   },
   {

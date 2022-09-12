@@ -2,8 +2,14 @@ import { useEffect } from 'react';
 import ChatContent from 'components/ChatContent';
 import UsersList from 'components/sidebar/UsersList';
 import { socket } from 'helpers/socket';
+import { useStore } from 'store/Store';
+import { IMessage } from 'store/UserStore';
 
 const PrivatePage = () => {
+  const {
+    userContext: { setSelectedUser, setUserInfo },
+  } = useStore();
+
   useEffect(() => {
     socket.auth = { token: localStorage.getItem('token') };
     socket.connect();
@@ -12,10 +18,22 @@ const PrivatePage = () => {
 
     socket.on('contacts', (contacts) => console.log(contacts));
 
-    socket.emit('sendMessage', 'sample message');
+    // socket.emit('sendMessage', 'sample message');
 
-    socket.on('receiveMessage', (data: any) => {
-      console.log(data);
+    socket.on('receiveMessage', (message: IMessage) => {
+      console.log('RM', message);
+      setSelectedUser((prevState) => {
+        if (prevState?.messages) {
+          const messages = [...prevState.messages];
+          messages.push(message);
+          return { ...prevState, messages };
+        }
+        return prevState;
+      });
+      setUserInfo((prevState) => {
+        prevState.contacts[0].messages.push(message);
+        return { ...prevState };
+      });
     });
 
     socket.on('connect_error', (err) => {

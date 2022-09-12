@@ -41,10 +41,10 @@ io.of(PRIVATE_CHAT).use((socket, next) => {
 });
 
 io.of(PRIVATE_CHAT).on('connection', async (socket) => {
-  console.log(socket.user);
+  // Join the user to his associated room
+  socket.join(socket.user.id);
 
   const contacts = await contactEntity.find({ userId: socket.user.id });
-  console.log('contacts', contacts);
   socket.emit('contacts', contacts);
   //  async () => {
   //   try {
@@ -59,7 +59,10 @@ io.of(PRIVATE_CHAT).on('connection', async (socket) => {
   //   } catch (error) {}
   // });
 
-  socket.on('sendMessage', (msg) => {});
+  socket.on('sendMessage', (msg) => {
+    console.log(msg);
+    socket.to(msg.sentTo.userId).to(socket.user.id).emit('receiveMessage', msg);
+  });
 });
 
 const serverPort = serverConfig.serverPort;

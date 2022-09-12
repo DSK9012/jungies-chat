@@ -2,7 +2,7 @@
 import { styled } from '@mui/material';
 import sai from 'assets/sai.jpg';
 import { useStore } from 'store/Store';
-import { IUser } from 'store/UserStore';
+import { IContact, IUser } from 'store/UserStore';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
@@ -81,6 +81,7 @@ export default function Users({ searchMode, searchText, handleClose }: IProps) {
         userId: prevState._id,
         contactUserId: user._id,
         unreadNotifications: 0,
+        messages: [],
       };
       const contacts = [selectedUserInfo, ...prevState.contacts];
       setSelectedUser({ ...selectedUserInfo, messages: [] });
@@ -89,7 +90,14 @@ export default function Users({ searchMode, searchText, handleClose }: IProps) {
     handleClose();
   };
 
-  const handleSelectUser = (user: IUser) => {};
+  const handleSelectUser = (user: IContact) => {
+    setUserInfo((prevState) => {
+      const index = prevState.contacts.findIndex((contact) => contact._id === user._id);
+      prevState.contacts[index] = user;
+      setSelectedUser({ ...user, messages: [] });
+      return prevState;
+    });
+  };
 
   if (searchMode) {
     return (
