@@ -16,7 +16,7 @@ export const userInfoReducer = (prevState: IUserInfo, action: Actions): IUserInf
     }
 
     case 'AUTHENTICATED': {
-      return { ...prevState, isAuthenticated: true, isLoading: true, hasError: false, ...action.payload };
+      return { ...prevState, isAuthenticated: true, isLoading: false, hasError: false, ...action.payload };
     }
 
     case 'CONTACTS_LOADING': {

@@ -67,7 +67,7 @@ if (localStorage.getItem('token')) setAuthToken(localStorage.getItem('token'));
 function App() {
   const {
     userContext: {
-      userInfo: { isAuthenticated, isLoading },
+      userInfo: { isLoading, isAuthenticated },
       getUser,
     },
   } = useStore();
@@ -75,7 +75,7 @@ function App() {
   useEffect(() => {
     if (!isAuthenticated) getUser();
   }, [isAuthenticated]);
-
+  console.log(isAuthenticated, isLoading);
   return (
     <$Container>
       <$GlassCircleGradient1 />

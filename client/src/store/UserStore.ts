@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useState, ChangeEvent, Dispatch, SetStateAction, useReducer } from 'react';
 import { SignInFormik } from 'formik-config/SignInUserFormik';
 import setAuthToken from 'helpers/set-auth-token';
@@ -16,7 +16,7 @@ export interface IUserStore {
   loginUser: (data: SignInFormik, resetForm: () => void) => void;
   getUser: () => void;
   searchUsers: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  setSearchedUsers: Dispatch<SetStateAction<IUser[]>>;
+  setSearchedUsers: Dispatch<SetStateAction<ISearchedUsers>>;
   setSelectedUser: Dispatch<SetStateAction<IContact | null>>;
 }
 
@@ -60,9 +60,17 @@ export const userStore = () => {
 
   const registerUser = async (userData: FormData, resetForm: () => void) => {
     try {
-      const { data } = await axios.post('http://localhost:5000/api/user/register', userData);
-      if (data.token) localStorage.setItem('token', data.token);
-      dispatch({ type: 'AUTHENTICATED', payload: data.userInfo });
+      const {
+        data: { user, token },
+      } = await axios.post('http://localhost:5000/api/user/register', userData);
+      if (token) localStorage.setItem('token', token);
+      dispatch({
+        type: 'AUTHENTICATED',
+        payload: {
+          ...user,
+          id: user._id,
+        },
+      });
     } catch (error) {
       dispatch({ type: 'HAS_ERROR' });
     }
@@ -70,9 +78,17 @@ export const userStore = () => {
 
   const loginUser = async (userData: SignInFormik, resetForm: () => void) => {
     try {
-      const { data } = await axios.post('http://localhost:5000/api/user/login', userData);
-      if (data.token) localStorage.setItem('token', data.token);
-      dispatch({ type: 'AUTHENTICATED', payload: data.userInfo });
+      const {
+        data: { user, token },
+      } = await axios.post('http://localhost:5000/api/user/login', userData);
+      if (token) localStorage.setItem('token', token);
+      dispatch({
+        type: 'AUTHENTICATED',
+        payload: {
+          ...user,
+          id: user._id,
+        },
+      });
     } catch (error) {
       dispatch({ type: 'HAS_ERROR' });
     }
@@ -81,8 +97,16 @@ export const userStore = () => {
   const getUser = async () => {
     if (localStorage.getItem('token')) setAuthToken(localStorage.getItem('token'));
     try {
-      const { data } = await axios('http://localhost:5000/api/user');
-      dispatch({ type: 'AUTHENTICATED', payload: data.userInfo });
+      const {
+        data: { user },
+      } = await axios('http://localhost:5000/api/user');
+      dispatch({
+        type: 'AUTHENTICATED',
+        payload: {
+          ...user,
+          id: user._id,
+        },
+      });
     } catch (error) {
       dispatch({ type: 'HAS_ERROR' });
     }
