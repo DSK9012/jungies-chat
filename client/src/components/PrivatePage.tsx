@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import ChatContent from 'components/ChatContent';
-import UsersList from 'components/sidebar/UsersList';
+import UsersList from 'components/sidebar/Sidebar';
 import { socket } from 'helpers/socket';
 import { useStore } from 'store/Store';
 import { IMessage } from 'helpers/types';

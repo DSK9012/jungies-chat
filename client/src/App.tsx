@@ -27,9 +27,18 @@ const $Content = styled('div')(({ theme }) => ({
 
 const $Header = styled('h3')(() => ({
   fontSize: '40px',
+  padding: '0 4px',
   fontFamily: 'Oleo Script Swash Caps, cursive',
   color: '#fff',
-  textShadow: '0 0 5px  #47e7e7, 0 0 10px #47e7e7, 0 0 20px #47e7e7, 0 0 40px #47e7e7, 0 0 80px #47e7e7',
+  cursor: 'pointer',
+  '&.glowing-text': {
+    textShadow: '0 0 5px  #47e7e7, 0 0 10px #47e7e7, 0 0 20px #47e7e7, 0 0 40px #47e7e7, 0 0 80px #47e7e7',
+  },
+  '&.gradient-text': {
+    background: 'linear-gradient(to bottom right, #03f9abbf, #32b8a2fa, #ffaa00, #ed5b09)',
+    '-webkit-background-clip': 'text',
+    '-webkit-text-fill-color': 'transparent',
+  },
 }));
 
 const $GlassCircleGradient1 = styled('span')(() => ({
@@ -65,6 +74,7 @@ const $GlassCircleGradient3 = styled('span')(() => ({
 if (localStorage.getItem('token')) setAuthToken(localStorage.getItem('token'));
 
 function App() {
+  const [toggleHeaderStyle, setToggleHeaderStyle] = useState<boolean>(false);
   const {
     userContext: {
       userInfo: { isLoading, isAuthenticated },
@@ -75,13 +85,18 @@ function App() {
   useEffect(() => {
     if (!isAuthenticated) getUser();
   }, [isAuthenticated]);
-  console.log(isAuthenticated, isLoading);
+
   return (
     <$Container>
       <$GlassCircleGradient1 />
       <$GlassCircleGradient2 />
       <$GlassCircleGradient3 />
-      <$Header>Jungies Chat</$Header>
+      <$Header
+        className={toggleHeaderStyle ? 'gradient-text' : 'glowing-text'}
+        onClick={() => setToggleHeaderStyle((prevState) => !prevState)}
+      >
+        Jungies Kaburulu
+      </$Header>
       <$Content>{!isLoading && (isAuthenticated ? <PrivatePage /> : <LoginPage />)}</$Content>
     </$Container>
   );

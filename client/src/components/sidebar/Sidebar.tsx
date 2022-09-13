@@ -3,7 +3,7 @@ import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
 import UserSearch from './UserSearch';
 import UsersHeader from './UsersHeader';
-import Users from './Users';
+import Contacts from './Contacts';
 
 const $Container = styled('div')(({ theme }) => ({
   width: '450px',
@@ -61,7 +61,7 @@ export default function UsersList() {
         handleChange={handleChange}
         handleClose={handleClose}
       />
-      <Users searchMode={searchMode} searchText={searchText} handleClose={handleClose} />
+      <Contacts searchMode={searchMode} searchText={searchText} handleClose={handleClose} />
     </$Container>
   );
 }

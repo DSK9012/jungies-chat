@@ -1,6 +1,7 @@
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
 import { IContact, IUser } from 'helpers/types';
+import noContcats from 'assets/no-contacts.svg';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
@@ -59,6 +60,16 @@ const $NoUserFound = styled($SearchingText)(() => ({
   justifyContent: 'center',
 }));
 
+const $NoContactsContainer = styled($Container)(() => ({
+  justifyContent: 'center',
+  height: '70%',
+}));
+
+const $NoContactsText = styled('h4')(() => ({
+  color: '#a7b0b6',
+  marginTop: '16px',
+}));
+
 interface IProps {
   searchMode: boolean;
   searchText: string;
@@ -67,7 +78,12 @@ interface IProps {
 
 export default function Users({ searchMode, searchText, handleClose }: IProps) {
   const {
-    userContext: { searchedUsers, selectedUser, setSelectedUser, userInfo },
+    userContext: {
+      searchedUsers,
+      selectedUser,
+      setSelectedUser,
+      userInfo: { contacts },
+    },
   } = useStore();
 
   const handleSelectNewUser = (user: IContact) => {
@@ -124,9 +140,18 @@ export default function Users({ searchMode, searchText, handleClose }: IProps) {
     );
   }
 
+  if (!contacts.data.length) {
+    return (
+      <$NoContactsContainer>
+        <img src={noContcats} alt='no-contacts' width='180px' height='200px' />
+        <$NoContactsText>No contacts</$NoContactsText>
+      </$NoContactsContainer>
+    );
+  }
+
   return (
     <$Container>
-      {userInfo.contacts.data.map((user) => (
+      {contacts.data.map((user) => (
         <$UserContainer
           className={selectedUser && user.id === selectedUser.id ? 'selected' : ''}
           onClick={() => handleSelectUser(user)}

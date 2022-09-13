@@ -9,18 +9,8 @@ const $Container = styled('div')(() => ({
   padding: '4px 10px',
 }));
 
-const $UserInfo = styled('div')(() => ({
-  display: 'flex',
-  alignItems: 'center',
-}));
-
 const $UserImage = styled('img')(() => ({
   borderRadius: '50%',
-}));
-
-const $UserName = styled('h4')(() => ({
-  marginLeft: '8px',
-  textTransform: 'capitalize',
 }));
 
 export default function UsersHeader() {
@@ -30,11 +20,8 @@ export default function UsersHeader() {
 
   return (
     <$Container>
-      <$UserInfo>
-        <$UserImage src={`http://localhost:5000/api/user/avatar/${userInfo.id}`} width='50px' height='50px' />
-        <$UserName>{userInfo.name}</$UserName>
-      </$UserInfo>
-      <MoreVertIcon />
+      <$UserImage src={`http://localhost:5000/api/user/avatar/${userInfo.id}`} width='50px' height='50px' />
+      <MoreVertIcon sx={{ cursor: 'pointer' }} />
     </$Container>
   );
 }
