@@ -1,8 +1,6 @@
-/* eslint-disable no-underscore-dangle */
 import { styled } from '@mui/material';
-import sai from 'assets/sai.jpg';
 import { useStore } from 'store/Store';
-import { IContact, IUser } from 'store/UserStore';
+import { IContact, IUser } from 'helpers/types';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
@@ -69,34 +67,34 @@ interface IProps {
 
 export default function Users({ searchMode, searchText, handleClose }: IProps) {
   const {
-    userContext: { searchedUsers, selectedUser, setSelectedUser, setUserInfo, userInfo },
+    userContext: { searchedUsers, selectedUser, setSelectedUser, userInfo },
   } = useStore();
 
-  const handleSelectNewUser = (user: IUser) => {
-    setUserInfo((prevState) => {
-      const selectedUserInfo = {
-        ...user,
-        lastMessage: '',
-        chatId: '',
-        userId: prevState._id,
-        contactUserId: user._id,
-        unreadNotifications: 0,
-        messages: [],
-      };
-      const contacts = [selectedUserInfo, ...prevState.contacts];
-      setSelectedUser({ ...selectedUserInfo, messages: [] });
-      return { ...prevState, contacts };
-    });
+  const handleSelectNewUser = (user: IContact) => {
+    // setUserInfo((prevState) => {
+    //   const selectedUserInfo = {
+    //     ...user,
+    //     lastMessage: '',
+    //     chatId: '',
+    //     userId: prevState._id,
+    //     contactUserId: user._id,
+    //     unreadNotifications: 0,
+    //     messages: [],
+    //   };
+    //   const contacts = [selectedUserInfo, ...prevState.contacts];
+    //   setSelectedUser({ ...selectedUserInfo, messages: [] });
+    //   return { ...prevState, contacts };
+    // });
     handleClose();
   };
 
   const handleSelectUser = (user: IContact) => {
-    setUserInfo((prevState) => {
-      const index = prevState.contacts.findIndex((contact) => contact._id === user._id);
-      prevState.contacts[index] = user;
-      setSelectedUser({ ...user, messages: [] });
-      return prevState;
-    });
+    // setUserInfo((prevState) => {
+    //   const index = prevState.contacts.findIndex((contact) => contact._id === user._id);
+    //   prevState.contacts[index] = user;
+    //   setSelectedUser({ ...user, messages: [] });
+    //   return prevState;
+    // });
   };
 
   if (searchMode) {
@@ -108,12 +106,12 @@ export default function Users({ searchMode, searchText, handleClose }: IProps) {
           </$SearchingText>
         )}
         <$Container>
-          {searchedUsers.length === 0 ? (
+          {searchedUsers.data.length === 0 ? (
             <$NoUserFound>No users found</$NoUserFound>
           ) : (
-            searchedUsers.map((user) => (
+            searchedUsers.data.map((user) => (
               <$UserContainer onClick={() => handleSelectNewUser(user)}>
-                <$UserImage src={`http://localhost:5000/api/user/avatar/${user._id}`} width='50px' height='50px' />
+                <$UserImage src={`http://localhost:5000/api/user/avatar/${user.id}`} width='50px' height='50px' />
                 <$UserInfo>
                   <$UserName>{user.name}</$UserName>
                   <$LastMessage />
@@ -128,12 +126,12 @@ export default function Users({ searchMode, searchText, handleClose }: IProps) {
 
   return (
     <$Container>
-      {userInfo.contacts.map((user) => (
+      {userInfo.contacts.data.map((user) => (
         <$UserContainer
-          className={selectedUser && user._id === selectedUser._id ? 'selected' : ''}
+          className={selectedUser && user.id === selectedUser.id ? 'selected' : ''}
           onClick={() => handleSelectUser(user)}
         >
-          <$UserImage src={`http://localhost:5000/api/user/avatar/${user._id}`} width='50px' height='50px' />
+          <$UserImage src={`http://localhost:5000/api/user/avatar/${user.id}`} width='50px' height='50px' />
           <$UserInfo>
             <$UserName>{user.name}</$UserName>
             <$LastMessage>{user.lastMessage}</$LastMessage>

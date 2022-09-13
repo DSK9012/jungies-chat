@@ -44,10 +44,10 @@ export default function Chat() {
   if (!selectedUser) {
     return <h3>No messages yet.</h3>;
   }
-  console.log(selectedUser);
+
   return (
     <$Container>
-      {selectedUser.messages.map((message) => (
+      {selectedUser.messages.data.map((message) => (
         <$Message className='left'>
           {message.message}
           <$MsgTime>6:00 am</$MsgTime>

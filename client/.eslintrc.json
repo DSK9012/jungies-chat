@@ -29,7 +29,7 @@
     "eol-last": 2,
     "react/destructuring-assignment": 1,
     "no-trailing-spaces": 2,
-    "indent": [2, 2],
+    "indent": [2, 2, { "SwitchCase": 1 }],
     "quotes": [2, "single"],
     "import/no-unresolved": 0,
     "react/react-in-jsx-scope": 0,
@@ -39,7 +39,7 @@
         "groups": ["builtin", "external", "internal", "sibling", "parent", "index"]
       }
     ],
-    "no-unused-vars": 1,
+    "no-unused-vars": [1, { "args": "none" }],
     "no-unused-expressions": 2,
     "object-curly-spacing": [1, "always"],
     "import/extensions": 0,
@@ -59,7 +59,8 @@
     "react/function-component-definition": 0,
     "react/jsx-no-constructed-context-values": 0,
     "import/prefer-default-export": 0,
-    "no-underscore-dangle": 0
+    "no-underscore-dangle": 0,
+    "no-shadow": 0
   },
   "settings": {
     "react": {

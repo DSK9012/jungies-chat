@@ -66,7 +66,10 @@ if (localStorage.getItem('token')) setAuthToken(localStorage.getItem('token'));
 
 function App() {
   const {
-    userContext: { isAuthenticated, userLoading, getUser },
+    userContext: {
+      userInfo: { isAuthenticated, isLoading },
+      getUser,
+    },
   } = useStore();
 
   useEffect(() => {
@@ -79,7 +82,7 @@ function App() {
       <$GlassCircleGradient2 />
       <$GlassCircleGradient3 />
       <$Header>Jungies Chat</$Header>
-      <$Content>{!userLoading && (isAuthenticated ? <PrivatePage /> : <LoginPage />)}</$Content>
+      <$Content>{!isLoading && (isAuthenticated ? <PrivatePage /> : <LoginPage />)}</$Content>
     </$Container>
   );
 }
