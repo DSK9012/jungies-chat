@@ -1,3 +1,4 @@
+import { format, parseISO } from 'date-fns';
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
 import startChat from 'assets/start-chat.svg';
@@ -70,11 +71,11 @@ export default function Chat() {
 
   return (
     <$Container>
-      {selectedUser?.messages.isLoading && <RenderChatSkelton />}
+      {/* {selectedUser?.messages.isLoading && <RenderChatSkelton />} */}
       {selectedUser?.messages.data.map((message) => (
         <$Message className={message.sentBy.userId === id ? 'right' : 'left'}>
           {message.message}
-          <$MsgTime>{message.createdAt}</$MsgTime>
+          <$MsgTime>{format(parseISO(message.createdAt), 'h:mm aaa')}</$MsgTime>
         </$Message>
       ))}
     </$Container>

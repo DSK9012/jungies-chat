@@ -72,7 +72,18 @@ export const userInfoReducer = (prevState: IUserInfo, action: Actions): IUserInf
     }
 
     case 'SET_MESSAGE': {
-      return prevState;
+      const userIndex = prevState.contacts.data.findIndex(
+        (contact) => contact.contactUserId === action.payload.contactUserId
+      );
+      const contacts = [...prevState.contacts.data];
+      if (userIndex !== -1) {
+        contacts.splice(userIndex, 1);
+        contacts.unshift(action.payload);
+      } else {
+        contacts[userIndex] = action.payload;
+      }
+
+      return { ...prevState, contacts: { ...prevState.contacts, data: contacts } };
     }
 
     case 'UPDATE_MESSAGE': {

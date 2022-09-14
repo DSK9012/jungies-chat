@@ -13,5 +13,5 @@ export type Actions =
   | { type: 'MESSAGES_LOADING'; payload: IContact }
   | { type: 'MESSAGES_HAS_ERROR' }
   | { type: 'GET_MESSAGES'; payload: IMessage[] }
-  | { type: 'SET_MESSAGE'; payload: IMessage }
+  | { type: 'SET_MESSAGE'; payload: IContact }
   | { type: 'UPDATE_MESSAGE'; payload: IMessage };

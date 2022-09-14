@@ -18,8 +18,6 @@ const PrivatePage = () => {
 
     socket.on('contacts', (contacts) => console.log(contacts));
 
-    // socket.emit('sendMessage', 'sample message');
-
     socket.on('receiveMessage', (message: IMessage) => {
       // setSelectedUser((prevState) => {
       //   if (prevState?.messages) {

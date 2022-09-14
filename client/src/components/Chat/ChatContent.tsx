@@ -1,8 +1,8 @@
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
 import noUserSelected from 'assets/no-user-selected.svg';
-import ChatInput from 'components/ChatInput';
-import UserChatHeader from 'components/UserChatHeader';
+import ChatInput from 'components/Chat/ChatInput';
+import UserChatHeader from 'components/Chat/UserChatHeader';
 import Chat from './Chat';
 
 const $Container = styled('div')(({ theme }) => ({
