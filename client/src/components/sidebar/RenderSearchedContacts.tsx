@@ -20,8 +20,9 @@ const RenderSearchedContacts = ({ handleClose }: IRenderSearchedContactsProps) =
   } = useStore();
 
   const handleSelectUser = (user: IContact) => {
-    dispatch({ type: 'SET_CONTACT', payload: user });
-    setSelectedUser(user);
+    const modifiedUser = { ...user, messages: { ...user.messages, isLoading: true } };
+    dispatch({ type: 'SET_CONTACT', payload: modifiedUser });
+    setSelectedUser(modifiedUser);
     handleClose();
   };
 

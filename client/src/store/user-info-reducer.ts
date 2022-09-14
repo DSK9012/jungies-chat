@@ -62,10 +62,7 @@ export const userInfoReducer = (prevState: IUserInfo, action: Actions): IUserInf
         ...prevState,
         contacts: {
           ...prevState.contacts,
-          data: [
-            { ...action.payload, messages: { ...action.payload.messages, isLoading: true } },
-            ...prevState.contacts.data,
-          ],
+          data: [action.payload, ...prevState.contacts.data],
         },
       };
     }

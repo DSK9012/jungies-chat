@@ -55,7 +55,7 @@ export enum MessageStatusTypes {
 }
 
 export interface IMessage {
-  id?: string;
+  _id?: string;
   chatId: string;
   sentBy: {
     userId: string;
@@ -67,4 +67,6 @@ export interface IMessage {
   };
   message: string;
   status: MessageStatusTypes;
+  createdAt: string;
+  updatedAt: string;
 }

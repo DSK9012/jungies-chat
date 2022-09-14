@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import ChatContent from 'components/ChatContent';
+import ChatContent from 'components/Chat/ChatContent';
 import UsersList from 'components/sidebar/Sidebar';
 import { socket } from 'helpers/socket';
 import { useStore } from 'store/Store';

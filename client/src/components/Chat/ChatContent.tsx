@@ -1,9 +1,9 @@
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
-import startChat from 'assets/start-chat.svg';
+import noUserSelected from 'assets/no-user-selected.svg';
+import ChatInput from 'components/ChatInput';
+import UserChatHeader from 'components/UserChatHeader';
 import Chat from './Chat';
-import ChatInput from './ChatInput';
-import UserChatHeader from './UserChatHeader';
 
 const $Container = styled('div')(({ theme }) => ({
   height: '90%',
@@ -19,7 +19,7 @@ const $Container = styled('div')(({ theme }) => ({
   justifyContent: 'space-between',
 }));
 
-const $StartChatContainer = styled($Container)(() => ({
+const $NoSelectedUserContainer = styled($Container)(() => ({
   justifyContent: 'center',
   alignItems: 'center',
 }));
@@ -36,10 +36,10 @@ export default function ChatContent() {
 
   if (!selectedUser) {
     return (
-      <$StartChatContainer>
-        <img src={startChat} alt='start-chat' width='400px' height='400px' />
+      <$NoSelectedUserContainer>
+        <img src={noUserSelected} alt='start-chat' width='400px' height='400px' />
         <$NoContactsText>Select user to start chat</$NoContactsText>
-      </$StartChatContainer>
+      </$NoSelectedUserContainer>
     );
   }
 
