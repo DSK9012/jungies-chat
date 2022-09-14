@@ -80,6 +80,16 @@ const theme = createTheme({
         },
       },
     },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#6d6d6d',
+          '&::after': {
+            background: 'linear-gradient(90deg,transparent,#808080,transparent)',
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -88,30 +98,30 @@ const theme = createTheme({
           textTransform: 'none',
           padding: '4px 12px',
           minWidth: '100px',
-          borderRadius:'20px',
-          '&.MuiButton-text, &.MuiButton-text:hover':{
-            backgroundColor:'transparent',
-            textDecoration:'underline',
+          borderRadius: '20px',
+          '&.MuiButton-text, &.MuiButton-text:hover': {
+            backgroundColor: 'transparent',
+            textDecoration: 'underline',
             color: '#47e7e7',
-            marginLeft:'-16px'
+            marginLeft: '-16px',
           },
           '&:hover': {
             backgroundColor: '#47e7e7a6',
           },
-          '&.Mui-disabled':{
+          '&.Mui-disabled': {
             backgroundColor: '#47e7e7a6',
-            cursor:'not-allowed',
-            color:'#ffffff75',
-          }
+            cursor: 'not-allowed',
+            color: '#ffffff75',
+          },
         },
       },
     },
-    MuiFormControl:{
-      styleOverrides:{
-        root:{
-          margin:'4px 0'
-        }
-      }
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          margin: '4px 0',
+        },
+      },
     },
     MuiFormLabel: {
       styleOverrides: {
@@ -170,7 +180,7 @@ const theme = createTheme({
           fontSize: '14px',
           fontWeight: 500,
           letterSpacing: '0.3px',
-          '&.Mui-error':{
+          '&.Mui-error': {
             color: '#ff7100',
           },
         },
@@ -183,15 +193,15 @@ const theme = createTheme({
             borderColor: '#47e7e7',
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            outline:'none',
+            outline: 'none',
             borderColor: '#47e7e7',
           },
           '&.Mui-error .MuiOutlinedInput-notchedOutline': {
-            outline:'none',
+            outline: 'none',
             borderColor: '#ff7100',
           },
           '&.Mui-error .MuiSvgIcon-root': {
-            outline:'none',
+            outline: 'none',
             color: '#ff7100',
           },
           '& .MuiInputBase-input.Mui-disabled': {
@@ -207,15 +217,15 @@ const theme = createTheme({
         },
         notchedOutline: {
           border: '2px solid #47e7e7',
-          borderRadius:'20px',
+          borderRadius: '20px',
         },
         input: {
           background: 'inherit',
-          color:'white',
-          '&::placeholder':{
-            color:'white',
-            opacity:'.6'
-          }
+          color: 'white',
+          '&::placeholder': {
+            color: 'white',
+            opacity: '.6',
+          },
         },
       },
     },

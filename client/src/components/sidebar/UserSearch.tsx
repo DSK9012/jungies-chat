@@ -1,6 +1,6 @@
 import { Search, Close } from '@mui/icons-material';
 import { InputAdornment, styled, TextField } from '@mui/material';
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent } from 'react';
 
 const $Container = styled('div')(() => ({
   padding: '4px 12px',

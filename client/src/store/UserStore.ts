@@ -115,12 +115,37 @@ export const userStore = () => {
   const searchUsers = async (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (localStorage.getItem('token')) setAuthToken(localStorage.getItem('token'));
 
-    setSearchedUsers((prevState) => ({ ...prevState, isLoading: true }));
+    setSearchedUsers((prevState) => ({ ...prevState, isLoading: prevState.data.length === 0 }));
     try {
-      const { data } = await axios.post(`http://localhost:5000/api/user/search?search=${event.target.value}`);
-      setSearchedUsers((prevState) => ({ ...prevState, isLoading: false, hasError: false, data }));
+      const {
+        data: { users },
+      } = await axios.post(`http://localhost:5000/api/user/search?search=${event.target.value}`);
+      const fetchedUsers: IContact[] = [];
+      for (let i = 0; i < users.length; i++) {
+        const existedContactIndex = userInfo.contacts.data.findIndex((user) => user.id === users[i]._id);
+        if (existedContactIndex !== -1) {
+          fetchedUsers.unshift(userInfo.contacts.data[existedContactIndex]);
+        } else {
+          const user = {
+            ...users[i],
+            id: '',
+            chatId: '',
+            userId: userInfo.id,
+            contactUserId: users[i]._id,
+            lastMessage: '',
+            unreadNotifications: 0,
+            messages: {
+              isLoading: false,
+              hasError: false,
+              data: [],
+            },
+          };
+          fetchedUsers.push(user);
+        }
+      }
+      setSearchedUsers((prevState) => ({ ...prevState, isLoading: false, hasError: false, data: fetchedUsers }));
     } catch (error) {
-      setSearchedUsers((prevState) => ({ ...prevState, hasError: true }));
+      setSearchedUsers((prevState) => ({ ...prevState, isLoading: false, hasError: true }));
     }
   };
 

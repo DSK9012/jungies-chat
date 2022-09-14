@@ -11,6 +11,7 @@ const $Container = styled('div')(() => ({
 
 const $UserImage = styled('img')(() => ({
   borderRadius: '50%',
+  cursor: 'pointer',
 }));
 
 export default function UsersHeader() {

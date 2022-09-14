@@ -1,9 +1,13 @@
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
-import { IContact, IUser } from 'helpers/types';
+import { IContact } from 'helpers/types';
+import error from 'assets/error.svg';
 import noContcats from 'assets/no-contacts.svg';
+import RenderSearchedContacts from './RenderSearchedContacts';
+import RenderContactSkelton from './RenderContactSkelton';
+import RenderContact from './RenderContact';
 
-const $Container = styled('div')(() => ({
+export const $Container = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',
@@ -14,7 +18,7 @@ const $Container = styled('div')(() => ({
   },
 }));
 
-const $UserContainer = styled('div')(() => ({
+export const $UserContainer = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   width: '100%',
@@ -25,24 +29,24 @@ const $UserContainer = styled('div')(() => ({
     backdropFilter: 'blur(100px)',
   },
   '&.selected': {
-    backgroundColor: '#676767',
+    backgroundColor: '#47e7e71f',
     backdropFilter: 'blur(100px)',
   },
 }));
 
-const $UserImage = styled('img')(() => ({
+export const $UserImage = styled('img')(() => ({
   borderRadius: '50%',
 }));
 
-const $UserInfo = styled('div')(() => ({
+export const $UserInfo = styled('div')(() => ({
   marginLeft: '16px',
 }));
 
-const $UserName = styled('h4')(() => ({
+export const $UserName = styled('h4')(() => ({
   fontSize: '18px',
 }));
 
-const $LastMessage = styled('p')(() => ({
+export const $LastMessage = styled('p')(() => ({
   fontSize: '12px',
 }));
 
@@ -52,7 +56,7 @@ const $SearchingText = styled('p')(() => ({
   padding: '8px 16px',
 }));
 
-const $NoUserFound = styled($SearchingText)(() => ({
+export const $NoUserFound = styled($SearchingText)(() => ({
   marginTop: '64px',
   height: '100%',
   display: 'flex',
@@ -60,87 +64,61 @@ const $NoUserFound = styled($SearchingText)(() => ({
   justifyContent: 'center',
 }));
 
-const $NoContactsContainer = styled($Container)(() => ({
+export const $NoContactsContainer = styled($Container)(() => ({
   justifyContent: 'center',
   height: '70%',
 }));
 
-const $NoContactsText = styled('h4')(() => ({
+export const $NoContactsText = styled('h4')(() => ({
   color: '#a7b0b6',
   marginTop: '16px',
 }));
 
 interface IProps {
   searchMode: boolean;
-  searchText: string;
   handleClose: () => void;
 }
 
-export default function Users({ searchMode, searchText, handleClose }: IProps) {
+export default function Users({ searchMode, handleClose }: IProps) {
   const {
     userContext: {
-      searchedUsers,
-      selectedUser,
       setSelectedUser,
-      userInfo: { contacts },
+      dispatch,
+      userInfo: {
+        contacts: { isLoading, hasError, data: contacts },
+      },
     },
   } = useStore();
 
-  const handleSelectNewUser = (user: IContact) => {
-    // setUserInfo((prevState) => {
-    //   const selectedUserInfo = {
-    //     ...user,
-    //     lastMessage: '',
-    //     chatId: '',
-    //     userId: prevState._id,
-    //     contactUserId: user._id,
-    //     unreadNotifications: 0,
-    //     messages: [],
-    //   };
-    //   const contacts = [selectedUserInfo, ...prevState.contacts];
-    //   setSelectedUser({ ...selectedUserInfo, messages: [] });
-    //   return { ...prevState, contacts };
-    // });
-    handleClose();
-  };
-
   const handleSelectUser = (user: IContact) => {
-    // setUserInfo((prevState) => {
-    //   const index = prevState.contacts.findIndex((contact) => contact._id === user._id);
-    //   prevState.contacts[index] = user;
-    //   setSelectedUser({ ...user, messages: [] });
-    //   return prevState;
-    // });
+    if (!user.messages.data.length) {
+      dispatch({ type: 'MESSAGES_LOADING', payload: user });
+    }
+    setSelectedUser(user);
   };
 
   if (searchMode) {
+    return <RenderSearchedContacts handleClose={handleClose} />;
+  }
+
+  if (isLoading) {
+    const skelton = [];
+    for (let i = 0; i < 10; i++) {
+      skelton.push(<RenderContactSkelton />);
+    }
+    return <$Container style={{ overflow: 'hidden' }}>{skelton}</$Container>;
+  }
+
+  if (hasError) {
     return (
-      <>
-        {searchText && (
-          <$SearchingText>
-            Searching for <b>&apos;{searchText}&apos;</b>
-          </$SearchingText>
-        )}
-        <$Container>
-          {searchedUsers.data.length === 0 ? (
-            <$NoUserFound>No users found</$NoUserFound>
-          ) : (
-            searchedUsers.data.map((user) => (
-              <$UserContainer onClick={() => handleSelectNewUser(user)}>
-                <$UserImage src={`http://localhost:5000/api/user/avatar/${user.id}`} width='50px' height='50px' />
-                <$UserInfo>
-                  <$UserName>{user.name}</$UserName>
-                  <$LastMessage />
-                </$UserInfo>
-              </$UserContainer>
-            ))
-          )}
-        </$Container>
-      </>
+      <$NoContactsContainer>
+        <img src={error} alt='error' width='180px' height='200px' />
+        <$NoContactsText>Ooops, Please try again</$NoContactsText>
+      </$NoContactsContainer>
     );
   }
 
-  if (!contacts.data.length) {
+  if (!contacts.length) {
     return (
       <$NoContactsContainer>
         <img src={noContcats} alt='no-contacts' width='180px' height='200px' />
@@ -151,102 +129,9 @@ export default function Users({ searchMode, searchText, handleClose }: IProps) {
 
   return (
     <$Container>
-      {contacts.data.map((user) => (
-        <$UserContainer
-          className={selectedUser && user.id === selectedUser.id ? 'selected' : ''}
-          onClick={() => handleSelectUser(user)}
-        >
-          <$UserImage src={`http://localhost:5000/api/user/avatar/${user.id}`} width='50px' height='50px' />
-          <$UserInfo>
-            <$UserName>{user.name}</$UserName>
-            <$LastMessage>{user.lastMessage}</$LastMessage>
-          </$UserInfo>
-        </$UserContainer>
+      {contacts.map((user) => (
+        <RenderContact user={user} handleSelectUser={handleSelectUser} />
       ))}
-      {/* <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer>
-      <$UserContainer>
-        <$UserImage src={sai} width='50px' height='50px' />
-        <$UserInfo>
-          <$UserName>Sai</$UserName>
-          <$LastMessage>This is the last message</$LastMessage>
-        </$UserInfo>
-      </$UserContainer> */}
     </$Container>
   );
 }

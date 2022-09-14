@@ -32,7 +32,7 @@ export default function UsersList() {
     setSearchMode(true);
     setSearchText(event.target.value);
     if (!event.target.value) {
-      // setSearchedUsers([]);
+      setSearchedUsers((prevState) => ({ ...prevState, data: [] }));
     } else {
       searchUsers(event);
     }
@@ -40,13 +40,13 @@ export default function UsersList() {
 
   const handleBlur = () => {
     if (!searchText) {
-      // setSearchedUsers([]);
+      setSearchedUsers((prevState) => ({ ...prevState, data: [] }));
       setSearchMode(false);
     }
   };
 
   const handleClose = () => {
-    // setSearchedUsers([]);
+    setSearchedUsers((prevState) => ({ ...prevState, data: [] }));
     setSearchMode(false);
     setSearchText('');
   };
@@ -61,7 +61,7 @@ export default function UsersList() {
         handleChange={handleChange}
         handleClose={handleClose}
       />
-      <Contacts searchMode={searchMode} searchText={searchText} handleClose={handleClose} />
+      <Contacts searchMode={searchMode} handleClose={handleClose} />
     </$Container>
   );
 }

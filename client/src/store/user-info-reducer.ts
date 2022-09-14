@@ -35,7 +35,18 @@ export const userInfoReducer = (prevState: IUserInfo, action: Actions): IUserInf
     }
 
     case 'MESSAGES_LOADING': {
-      return prevState;
+      const updatedContacts = [...prevState.contacts.data];
+      const selectedUserIndex = prevState.contacts.data.findIndex(
+        (user) => user.contactUserId === action.payload.contactUserId
+      );
+      updatedContacts[selectedUserIndex] = {
+        ...updatedContacts[selectedUserIndex],
+        messages: {
+          ...updatedContacts[selectedUserIndex].messages,
+          isLoading: true,
+        },
+      };
+      return { ...prevState, contacts: { ...prevState.contacts, data: updatedContacts } };
     }
 
     case 'MESSAGES_HAS_ERROR': {
@@ -47,7 +58,16 @@ export const userInfoReducer = (prevState: IUserInfo, action: Actions): IUserInf
     }
 
     case 'SET_CONTACT': {
-      return prevState;
+      return {
+        ...prevState,
+        contacts: {
+          ...prevState.contacts,
+          data: [
+            { ...action.payload, messages: { ...action.payload.messages, isLoading: true } },
+            ...prevState.contacts.data,
+          ],
+        },
+      };
     }
 
     case 'UPDATE_CONTACT': {
