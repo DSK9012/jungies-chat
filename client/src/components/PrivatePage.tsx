@@ -18,7 +18,7 @@ const PrivatePage = () => {
 
     socket.on('contacts', (contacts) => console.log(contacts));
 
-    socket.on('receiveMessage', (message: IMessage) => {
+    socket.on('message', (message: IMessage) => {
       // setSelectedUser((prevState) => {
       //   if (prevState?.messages) {
       //     const messages = [...prevState.messages];
@@ -31,6 +31,7 @@ const PrivatePage = () => {
       //   prevState.contacts[0].messages.push(message);
       //   return { ...prevState };
       // });
+      console.log(message);
     });
 
     socket.on('connect_error', (err) => {

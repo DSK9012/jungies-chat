@@ -26,39 +26,45 @@ export default function ChatInput() {
   } = useStore();
 
   const handleSubmit = () => {
-    setSelectedUser((prevState) => {
-      if (prevState) {
-        const date = new Date().toISOString();
-        const message = {
-          _id: '',
-          chatId: '',
-          sentBy: {
-            name,
-            userId: id,
-          },
-          sentTo: {
-            name: prevState.name,
-            userId: prevState.contactUserId,
-          },
-          message: msg,
-          status: MessageStatusTypes.WAITING,
-          createdAt: date,
-          updatedAt: date,
-        };
-        const messages = [...prevState.messages.data];
-        messages.push(message);
-        socket.emit('sendMessage', message);
-        const updatedContact = { ...prevState, lastMessage: msg, messages: { ...prevState.messages, data: messages } };
-        dispatch({
-          type: 'SET_MESSAGE',
-          payload: updatedContact,
-        });
-        return updatedContact;
-      }
+    if (msg.length > 0) {
+      setSelectedUser((prevState) => {
+        if (prevState) {
+          const date = new Date().toISOString();
+          const message = {
+            _id: '',
+            chatId: '',
+            sentBy: {
+              name,
+              userId: id,
+            },
+            sentTo: {
+              name: prevState.name,
+              userId: prevState.contactUserId,
+            },
+            message: msg,
+            status: MessageStatusTypes.WAITING,
+            createdAt: date,
+            updatedAt: date,
+          };
+          const messages = [...prevState.messages.data];
+          messages.push(message);
+          socket.emit('message', message);
+          const updatedContact = {
+            ...prevState,
+            lastMessage: msg,
+            messages: { ...prevState.messages, data: messages },
+          };
+          dispatch({
+            type: 'SET_MESSAGE',
+            payload: updatedContact,
+          });
+          return updatedContact;
+        }
 
-      return prevState;
-    });
-    setMsg('');
+        return prevState;
+      });
+      setMsg('');
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -66,7 +72,6 @@ export default function ChatInput() {
   };
 
   const handleKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
-    console.log(event.key);
     if (event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();

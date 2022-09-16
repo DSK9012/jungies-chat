@@ -11,6 +11,7 @@ const connectToMongoDB = require('./DBConnections');
 const socketAuth = require('./middlewares/socket-auth-validation');
 const { PRIVATE_CHAT } = require('./namespaces');
 const contactEntity = require('./routes/contacts/contactEntity');
+const { handleMessage } = require('./socket-handlers/handle-message');
 
 // Allow cors
 app.use(cors());
@@ -59,9 +60,9 @@ io.of(PRIVATE_CHAT).on('connection', async (socket) => {
   //   } catch (error) {}
   // });
 
-  socket.on('sendMessage', (msg) => {
+  socket.on('message', (msg) => {
     console.log(msg);
-    socket.to(msg.sentTo.userId).to(socket.user.id).emit('receiveMessage', msg);
+    handleMessage(socket, msg);
   });
 });
 
