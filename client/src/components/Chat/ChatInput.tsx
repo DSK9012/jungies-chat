@@ -31,8 +31,8 @@ export default function ChatInput() {
         if (prevState) {
           const date = new Date().toISOString();
           const message = {
-            _id: '',
-            chatId: '',
+            id: '',
+            chatId: prevState.id,
             sentBy: {
               name,
               userId: id,
@@ -45,6 +45,7 @@ export default function ChatInput() {
             status: MessageStatusTypes.WAITING,
             createdAt: date,
             updatedAt: date,
+            usersReadMessage: [],
           };
           const messages = [...prevState.messages.data];
           messages.push(message);

@@ -68,6 +68,18 @@ export const userInfoReducer = (prevState: IUserInfo, action: Actions): IUserInf
     }
 
     case 'UPDATE_CONTACT': {
+      const contacts = [...prevState.contacts.data];
+      const index = contacts.findIndex((contact) => contact.id === '');
+      if (index !== -1) {
+        contacts[index] = action.payload;
+        return { ...prevState, contacts: { ...prevState.contacts, data: contacts } };
+      }
+      const contactIndex = contacts.findIndex((contact) => contact.id === action.payload.id);
+      if (contactIndex !== -1) {
+        contacts[contactIndex] = action.payload;
+        return { ...prevState, contacts: { ...prevState.contacts, data: contacts } };
+      }
+
       return prevState;
     }
 

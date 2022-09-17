@@ -129,7 +129,6 @@ export const userStore = () => {
           const user = {
             ...users[i],
             id: '',
-            chatId: '',
             userId: userInfo.id,
             contactUserId: users[i]._id,
             lastMessage: '',

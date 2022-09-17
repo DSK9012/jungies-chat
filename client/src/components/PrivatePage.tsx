@@ -7,7 +7,7 @@ import { IMessage } from 'helpers/types';
 
 const PrivatePage = () => {
   const {
-    userContext: { setSelectedUser },
+    userContext: { setSelectedUser, dispatch },
   } = useStore();
 
   useEffect(() => {
@@ -17,6 +17,32 @@ const PrivatePage = () => {
     socket.on('connect', () => console.log('Connected'));
 
     socket.on('contacts', (contacts) => console.log(contacts));
+    socket.on('new-contact-updated', (data) => {
+      setSelectedUser((prevState) => {
+        if (prevState) {
+          const msgs = [...prevState.messages.data];
+          const msgIndex = msgs.findIndex((msg) => !msg.chatId);
+          msgs[msgIndex].id = data.newMessage._id;
+          msgs[msgIndex].chatId = data.newMessage.chatId;
+          msgs[msgIndex].status = data.newMessage.status;
+          const user = {
+            ...prevState,
+            id: data.newContact._id,
+            messages: {
+              ...prevState.messages,
+              data: msgs,
+            },
+          };
+          dispatch({
+            type: 'UPDATE_CONTACT',
+            payload: user,
+          });
+          return user;
+        }
+
+        return prevState;
+      });
+    });
 
     socket.on('message', (message: IMessage) => {
       // setSelectedUser((prevState) => {

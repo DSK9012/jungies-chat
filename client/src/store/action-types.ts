@@ -1,4 +1,4 @@
-import { IContact, IMessage, IUser } from 'helpers/types';
+import { IContact, IMessage, IServerContact, IServerMessage, IUser } from 'helpers/types';
 
 export type Actions =
   | { type: 'USER_LOADING' }
@@ -12,6 +12,6 @@ export type Actions =
   | { type: 'UPDATE_CONTACT'; payload: IContact }
   | { type: 'MESSAGES_LOADING'; payload: IContact }
   | { type: 'MESSAGES_HAS_ERROR' }
-  | { type: 'GET_MESSAGES'; payload: IMessage[] }
+  | { type: 'GET_MESSAGES'; payload: IServerMessage[] }
   | { type: 'SET_MESSAGE'; payload: IContact }
   | { type: 'UPDATE_MESSAGE'; payload: IMessage };

@@ -61,7 +61,6 @@ io.of(PRIVATE_CHAT).on('connection', async (socket) => {
   // });
 
   socket.on('message', (msg) => {
-    console.log(msg);
     handleMessage(socket, msg);
   });
 });

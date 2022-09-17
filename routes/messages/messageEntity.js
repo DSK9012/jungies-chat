@@ -40,8 +40,22 @@ const messageEntity = mongoose.Schema(
       enum: ['SENT', 'DELIVERED', 'READ'],
       trim: true,
     },
+    usersReadMessage: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          require: true,
+          ref: 'users',
+        },
+        name: {
+          type: String,
+          require: true,
+          trim: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('contacts', messageEntity);
+module.exports = mongoose.model('messages', messageEntity);

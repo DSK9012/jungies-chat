@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
 import noUserSelected from 'assets/no-user-selected.svg';
 import ChatInput from 'components/Chat/ChatInput';
 import UserChatHeader from 'components/Chat/UserChatHeader';
+import { socket } from 'helpers/socket';
 import Chat from './Chat';
 
 const $Container = styled('div')(({ theme }) => ({
@@ -31,8 +33,36 @@ const $NoContactsText = styled('h4')(() => ({
 
 export default function ChatContent() {
   const {
-    userContext: { selectedUser },
+    userContext: { selectedUser, setSelectedUser, dispatch },
   } = useStore();
+
+  useEffect(() => {
+    socket.on('message-sent', (newMessage) => {
+      setSelectedUser((prevState) => {
+        if (prevState) {
+          const msgs = [...prevState.messages.data];
+          const msgIndex = msgs.findIndex((msg) => !msg.chatId);
+          msgs[msgIndex].id = newMessage._id;
+          msgs[msgIndex].status = newMessage.status;
+          const user = {
+            ...prevState,
+            messages: {
+              ...prevState.messages,
+              data: msgs,
+            },
+          };
+          dispatch({
+            type: 'UPDATE_CONTACT',
+            payload: user,
+          });
+
+          return user;
+        }
+
+        return prevState;
+      });
+    });
+  }, []);
 
   if (!selectedUser) {
     return (

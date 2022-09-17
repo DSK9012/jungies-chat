@@ -13,12 +13,10 @@ export interface IUser {
 
 export interface IContact {
   id: string;
-  chatId: string;
   userId: string;
   contactUserId: string;
   name: string;
   lastMessage: string;
-  unreadNotifications: number;
   messages: {
     isLoading: boolean;
     hasError: boolean;
@@ -55,7 +53,7 @@ export enum MessageStatusTypes {
 }
 
 export interface IMessage {
-  _id?: string;
+  id?: string;
   chatId: string;
   sentBy: {
     userId: string;
@@ -67,6 +65,32 @@ export interface IMessage {
   };
   message: string;
   status: MessageStatusTypes;
+  usersReadMessage: IBasicUser[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IServerMessage extends Omit<IMessage, 'id'> {
+  _id: string;
+}
+
+export enum EChatTypes {
+  PRIVATE = 'PRIVATE',
+  GROUP = 'GROUP',
+}
+
+interface IBasicUser {
+  userId: string;
+  name: string;
+}
+
+export interface IServerContact {
+  _id: string;
+  chatType: EChatTypes;
+  createdBy: string;
+  users: IBasicUser[];
+  lastUpdatedBy: string;
+  lastMessage: string;
   createdAt: string;
   updatedAt: string;
 }
