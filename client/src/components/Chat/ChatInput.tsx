@@ -4,7 +4,7 @@ import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import { useStore } from 'store/Store';
 import { socket } from 'helpers/socket';
-import { MessageStatusTypes } from 'helpers/types';
+import { IContact, MessageStatusTypes } from 'helpers/types';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
@@ -26,7 +26,8 @@ export default function ChatInput() {
   } = useStore();
 
   const handleSubmit = () => {
-    if (msg.length > 0) {
+    if (msg.trim().length > 0) {
+      let user: Partial<IContact> = {};
       setSelectedUser((prevState) => {
         if (prevState) {
           const date = new Date().toISOString();
@@ -50,19 +51,18 @@ export default function ChatInput() {
           const messages = [...prevState.messages.data];
           messages.push(message);
           socket.emit('message', message);
-          const updatedContact = {
+          user = {
             ...prevState,
             lastMessage: msg,
             messages: { ...prevState.messages, data: messages },
           };
-          dispatch({
-            type: 'SET_MESSAGE',
-            payload: updatedContact,
-          });
-          return updatedContact;
+          return user as IContact;
         }
-
         return prevState;
+      });
+      dispatch({
+        type: 'SET_MESSAGE',
+        payload: user as IContact,
       });
       setMsg('');
     }

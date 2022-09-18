@@ -4,6 +4,7 @@ import { useStore } from 'store/Store';
 import noUserSelected from 'assets/no-user-selected.svg';
 import ChatInput from 'components/Chat/ChatInput';
 import UserChatHeader from 'components/Chat/UserChatHeader';
+import { IContact } from 'helpers/types';
 import { socket } from 'helpers/socket';
 import Chat from './Chat';
 
@@ -38,28 +39,29 @@ export default function ChatContent() {
 
   useEffect(() => {
     socket.on('message-sent', (newMessage) => {
+      let user: Partial<IContact> = {};
       setSelectedUser((prevState) => {
         if (prevState) {
           const msgs = [...prevState.messages.data];
-          const msgIndex = msgs.findIndex((msg) => !msg.chatId);
+          const msgIndex = msgs.findIndex((msg) => msg.id === '');
           msgs[msgIndex].id = newMessage._id;
           msgs[msgIndex].status = newMessage.status;
-          const user = {
+          user = {
             ...prevState,
             messages: {
               ...prevState.messages,
               data: msgs,
             },
           };
-          dispatch({
-            type: 'UPDATE_CONTACT',
-            payload: user,
-          });
 
-          return user;
+          return user as IContact;
         }
 
         return prevState;
+      });
+      dispatch({
+        type: 'UPDATE_CONTACT',
+        payload: user as IContact,
       });
     });
   }, []);

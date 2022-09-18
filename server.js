@@ -10,8 +10,8 @@ const app = express();
 const connectToMongoDB = require('./DBConnections');
 const socketAuth = require('./middlewares/socket-auth-validation');
 const { PRIVATE_CHAT } = require('./namespaces');
-const contactEntity = require('./routes/contacts/contactEntity');
 const { handleMessage } = require('./socket-handlers/handle-message');
+const { fetchContacts } = require('./socket-handlers/fetch-contacts');
 
 // Allow cors
 app.use(cors());
@@ -45,20 +45,8 @@ io.of(PRIVATE_CHAT).on('connection', async (socket) => {
   // Join the user to his associated room
   socket.join(socket.user.id);
 
-  const contacts = await contactEntity.find({ userId: socket.user.id });
-  socket.emit('contacts', contacts);
-  //  async () => {
-  //   try {
-  //     // const activeUsers
-  //     // for (let [id, socket] of io.of("/").sockets) {
-  //     //   console.log(socket.username),
-  //     //   if(socket.id===){
-
-  //     //   }
-  //     // }
-  //     return [{ a: 1 }];
-  //   } catch (error) {}
-  // });
+  socket.emit('connection', 'User is connected to his room.');
+  socket.emit('contacts', await fetchContacts(socket));
 
   socket.on('message', (msg) => {
     handleMessage(socket, msg);

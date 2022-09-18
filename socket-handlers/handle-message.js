@@ -68,7 +68,7 @@ const handleMessage = async (socket, msg) => {
     });
     await newMessage.save();
     socket.emit('message-sent', newMessage);
-    socket.to(socket.user.id).to(msg.sentTo.userId).emit('new-message', { newMessage });
+    socket.to(socket.user.id).to(msg.sentTo.userId).emit('new-message', newMessage);
   }
   socket.to(socket.user.id).to(msg.sentTo.userId).emit('message', msg);
 };

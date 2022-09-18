@@ -13,6 +13,10 @@ export interface IUser {
 
 export interface IContact {
   id: string;
+  chatType: string;
+  createdBy: string;
+  users: [];
+  lastUpdatedBy: string;
   userId: string;
   contactUserId: string;
   name: string;

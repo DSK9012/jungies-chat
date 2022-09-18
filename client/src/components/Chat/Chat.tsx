@@ -1,5 +1,8 @@
+/* eslint-disable no-nested-ternary */
 import { format, parseISO } from 'date-fns';
 import { styled } from '@mui/material';
+import DoneIcon from '@mui/icons-material/Done';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { useStore } from 'store/Store';
 import startChat from 'assets/start-chat.svg';
 import RenderChatSkelton from './RenderChatSkelton';
@@ -75,7 +78,14 @@ export default function Chat() {
       {selectedUser?.messages.data.map((message) => (
         <$Message className={message.sentBy.userId === id ? 'right' : 'left'}>
           {message.message}
-          <$MsgTime>{format(parseISO(message.createdAt), 'h:mm aaa')}</$MsgTime>
+          <$MsgTime>
+            {format(parseISO(message.createdAt), 'h:mm aaa')}
+            {message.status.toLowerCase() === 'sent' ? (
+              <DoneIcon sx={{ fontSize: '16px' }} />
+            ) : message.status.toLowerCase() === 'delivered' ? (
+              <DoneAllIcon />
+            ) : null}
+          </$MsgTime>
         </$Message>
       ))}
     </$Container>

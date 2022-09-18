@@ -75,6 +75,7 @@ export const userInfoReducer = (prevState: IUserInfo, action: Actions): IUserInf
         return { ...prevState, contacts: { ...prevState.contacts, data: contacts } };
       }
       const contactIndex = contacts.findIndex((contact) => contact.id === action.payload.id);
+      console.log(action.payload, contactIndex);
       if (contactIndex !== -1) {
         contacts[contactIndex] = action.payload;
         return { ...prevState, contacts: { ...prevState.contacts, data: contacts } };

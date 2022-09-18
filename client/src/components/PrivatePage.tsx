@@ -3,11 +3,17 @@ import ChatContent from 'components/Chat/ChatContent';
 import UsersList from 'components/sidebar/Sidebar';
 import { socket } from 'helpers/socket';
 import { useStore } from 'store/Store';
-import { IMessage } from 'helpers/types';
+import { IContact, IMessage } from 'helpers/types';
+import UserSearch from './sidebar/UserSearch';
 
 const PrivatePage = () => {
   const {
-    userContext: { setSelectedUser, dispatch },
+    userContext: {
+      selectedUser,
+      setSelectedUser,
+      dispatch,
+      userInfo: { contacts },
+    },
   } = useStore();
 
   useEffect(() => {
@@ -16,31 +22,32 @@ const PrivatePage = () => {
 
     socket.on('connect', () => console.log('Connected'));
 
-    socket.on('contacts', (contacts) => console.log(contacts));
-    socket.on('new-contact-updated', (data) => {
-      setSelectedUser((prevState) => {
-        if (prevState) {
-          const msgs = [...prevState.messages.data];
-          const msgIndex = msgs.findIndex((msg) => !msg.chatId);
-          msgs[msgIndex].id = data.newMessage._id;
-          msgs[msgIndex].chatId = data.newMessage.chatId;
-          msgs[msgIndex].status = data.newMessage.status;
-          const user = {
-            ...prevState,
-            id: data.newContact._id,
-            messages: {
-              ...prevState.messages,
-              data: msgs,
-            },
-          };
-          dispatch({
-            type: 'UPDATE_CONTACT',
-            payload: user,
-          });
-          return user;
-        }
+    socket.on('contacts', (contacts) => {
+      dispatch({
+        type: 'GET_CONTACTS',
+        payload: contacts,
+      });
+    });
 
-        return prevState;
+    socket.on('new-message', (newMessage) => {
+      const contactIndex = contacts.data.findIndex((contact) => contact.id === newMessage.chatId);
+      let user = { ...contacts.data[contactIndex] };
+      const msgs = [...user.messages.data];
+      msgs.push({ ...newMessage, id: newMessage._id });
+      user = {
+        ...user,
+        lastMessage: newMessage.message,
+        messages: {
+          ...user.messages,
+          data: msgs,
+        },
+      };
+      if (selectedUser && newMessage.chatId === selectedUser.id) {
+        setSelectedUser(user as IContact);
+      }
+      dispatch({
+        type: 'UPDATE_CONTACT',
+        payload: user as IContact,
       });
     });
 
