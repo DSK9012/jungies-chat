@@ -98,3 +98,9 @@ export interface IServerContact {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IStore {
+  userInfo: IUserInfo;
+  searchedUsers: ISearchedUsers;
+  selectedUser: IContact | null;
+}

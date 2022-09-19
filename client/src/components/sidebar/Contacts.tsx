@@ -82,7 +82,6 @@ interface IProps {
 export default function Users({ searchMode, handleClose }: IProps) {
   const {
     userContext: {
-      setSelectedUser,
       dispatch,
       userInfo: {
         contacts: { isLoading, hasError, data: contacts },
@@ -94,7 +93,10 @@ export default function Users({ searchMode, handleClose }: IProps) {
     if (!user.messages.data.length) {
       dispatch({ type: 'MESSAGES_LOADING', payload: user });
     }
-    setSelectedUser(user);
+    dispatch({
+      type: 'SET_SELECTED_USER',
+      payload: user,
+    });
   };
 
   if (searchMode) {

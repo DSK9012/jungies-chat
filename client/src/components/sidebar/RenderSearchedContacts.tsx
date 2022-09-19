@@ -15,14 +15,12 @@ const RenderSearchedContacts = ({ handleClose }: IRenderSearchedContactsProps) =
     userContext: {
       searchedUsers: { isLoading, hasError, data },
       dispatch,
-      setSelectedUser,
     },
   } = useStore();
 
   const handleSelectUser = (user: IContact) => {
     const modifiedUser = { ...user, messages: { ...user.messages, isLoading: true } };
     dispatch({ type: 'SET_CONTACT', payload: modifiedUser });
-    setSelectedUser(modifiedUser);
     handleClose();
   };
 

@@ -4,13 +4,11 @@ import UsersList from 'components/sidebar/Sidebar';
 import { socket } from 'helpers/socket';
 import { useStore } from 'store/Store';
 import { IContact, IMessage } from 'helpers/types';
-import UserSearch from './sidebar/UserSearch';
 
 const PrivatePage = () => {
   const {
     userContext: {
       selectedUser,
-      setSelectedUser,
       dispatch,
       userInfo: { contacts },
     },
@@ -29,25 +27,10 @@ const PrivatePage = () => {
       });
     });
 
-    socket.on('new-message', (newMessage) => {
-      const contactIndex = contacts.data.findIndex((contact) => contact.id === newMessage.chatId);
-      let user = { ...contacts.data[contactIndex] };
-      const msgs = [...user.messages.data];
-      msgs.push({ ...newMessage, id: newMessage._id });
-      user = {
-        ...user,
-        lastMessage: newMessage.message,
-        messages: {
-          ...user.messages,
-          data: msgs,
-        },
-      };
-      if (selectedUser && newMessage.chatId === selectedUser.id) {
-        setSelectedUser(user as IContact);
-      }
+    socket.on('message-sent', (newMessage) => {
       dispatch({
-        type: 'UPDATE_CONTACT',
-        payload: user as IContact,
+        type: 'MESSAGE_SENT',
+        payload: newMessage,
       });
     });
 

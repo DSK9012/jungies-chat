@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import axios, { AxiosResponse } from 'axios';
-import { useState, ChangeEvent, Dispatch, SetStateAction, useReducer } from 'react';
+import axios from 'axios';
+import { ChangeEvent, Dispatch, SetStateAction, useReducer } from 'react';
 import { SignInFormik } from 'formik-config/SignInUserFormik';
 import setAuthToken from 'helpers/set-auth-token';
-import { IContact, ISearchedUsers, IUser, IUserInfo } from 'helpers/types';
+import { IContact, ISearchedUsers, IUserInfo } from 'helpers/types';
 import { userInfoReducer } from './user-info-reducer';
 import { Actions } from './action-types';
 
@@ -16,11 +16,9 @@ export interface IUserStore {
   loginUser: (data: SignInFormik, resetForm: () => void) => void;
   getUser: () => void;
   searchUsers: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  setSearchedUsers: Dispatch<SetStateAction<ISearchedUsers>>;
-  setSelectedUser: Dispatch<SetStateAction<IContact | null>>;
 }
 
-export const userStoreInitialState = {
+export const initialState = {
   userInfo: {
     id: '',
     name: '',
@@ -44,19 +42,19 @@ export const userStoreInitialState = {
     data: [],
   },
   selectedUser: null,
+};
+
+export const userStoreInitialState = {
+  ...initialState,
   dispatch: () => undefined,
   registerUser: () => undefined,
   loginUser: () => undefined,
   getUser: () => undefined,
   searchUsers: () => undefined,
-  setSearchedUsers: () => undefined,
-  setSelectedUser: () => undefined,
 };
 
 export const userStore = () => {
-  const [userInfo, dispatch] = useReducer(userInfoReducer, userStoreInitialState.userInfo);
-  const [searchedUsers, setSearchedUsers] = useState<ISearchedUsers>(userStoreInitialState.searchedUsers);
-  const [selectedUser, setSelectedUser] = useState<IContact | null>(userStoreInitialState.selectedUser);
+  const [{ userInfo, searchedUsers, selectedUser }, dispatch] = useReducer(userInfoReducer, initialState);
 
   const registerUser = async (userData: FormData, resetForm: () => void) => {
     try {
@@ -115,7 +113,9 @@ export const userStore = () => {
   const searchUsers = async (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (localStorage.getItem('token')) setAuthToken(localStorage.getItem('token'));
 
-    setSearchedUsers((prevState) => ({ ...prevState, isLoading: prevState.data.length === 0 }));
+    dispatch({
+      type: 'SEARCH_USERS_LOADING',
+    });
     try {
       const {
         data: { users },
@@ -142,9 +142,14 @@ export const userStore = () => {
           fetchedUsers.push(user);
         }
       }
-      setSearchedUsers((prevState) => ({ ...prevState, isLoading: false, hasError: false, data: fetchedUsers }));
+      dispatch({
+        type: 'GET_SEARCH_USERS',
+        payload: fetchedUsers,
+      });
     } catch (error) {
-      setSearchedUsers((prevState) => ({ ...prevState, isLoading: false, hasError: true }));
+      dispatch({
+        type: 'SEARCH_USERS_ERROR',
+      });
     }
   };
 
@@ -153,8 +158,6 @@ export const userStore = () => {
     searchedUsers,
     selectedUser,
     dispatch,
-    setSelectedUser,
-    setSearchedUsers,
     registerUser,
     loginUser,
     getUser,
