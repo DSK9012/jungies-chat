@@ -2,7 +2,7 @@
 export type FormTypes = 'sign-in-form' | 'sign-up-form';
 
 export interface IUser {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   active: boolean;
@@ -11,8 +11,17 @@ export interface IUser {
   updatedAt: string;
 }
 
-export interface IContact {
-  id: string;
+export interface IContact extends IServerContact {
+  messages: {
+    isLoading: boolean;
+    hasError: boolean;
+    data: IMessage[];
+  };
+  unreadNotifications: number;
+}
+
+export interface IServerContact {
+  _id: string;
   chatType: string;
   createdBy: string;
   users: [];
@@ -21,11 +30,6 @@ export interface IContact {
   contactUserId: string;
   name: string;
   lastMessage: string;
-  messages: {
-    isLoading: boolean;
-    hasError: boolean;
-    data: IMessage[];
-  };
   active: boolean;
   lastActive: string;
   createdAt: string;
@@ -57,7 +61,7 @@ export enum MessageStatusTypes {
 }
 
 export interface IMessage {
-  id?: string;
+  _id?: string;
   chatId: string;
   sentBy: {
     userId: string;
@@ -74,10 +78,6 @@ export interface IMessage {
   updatedAt: string;
 }
 
-export interface IServerMessage extends Omit<IMessage, 'id'> {
-  _id: string;
-}
-
 export enum EChatTypes {
   PRIVATE = 'PRIVATE',
   GROUP = 'GROUP',
@@ -86,17 +86,6 @@ export enum EChatTypes {
 interface IBasicUser {
   userId: string;
   name: string;
-}
-
-export interface IServerContact {
-  _id: string;
-  chatType: EChatTypes;
-  createdBy: string;
-  users: IBasicUser[];
-  lastUpdatedBy: string;
-  lastMessage: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IStore {

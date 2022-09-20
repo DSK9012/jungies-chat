@@ -20,7 +20,7 @@ export interface IUserStore {
 
 export const initialState = {
   userInfo: {
-    id: '',
+    _id: '',
     name: '',
     email: '',
     active: false,
@@ -64,10 +64,7 @@ export const userStore = () => {
       if (token) localStorage.setItem('token', token);
       dispatch({
         type: 'AUTHENTICATED',
-        payload: {
-          ...user,
-          id: user._id,
-        },
+        payload: user,
       });
     } catch (error) {
       dispatch({ type: 'HAS_ERROR' });
@@ -82,10 +79,7 @@ export const userStore = () => {
       if (token) localStorage.setItem('token', token);
       dispatch({
         type: 'AUTHENTICATED',
-        payload: {
-          ...user,
-          id: user._id,
-        },
+        payload: user,
       });
     } catch (error) {
       dispatch({ type: 'HAS_ERROR' });
@@ -100,10 +94,7 @@ export const userStore = () => {
       } = await axios('http://localhost:5000/api/user');
       dispatch({
         type: 'AUTHENTICATED',
-        payload: {
-          ...user,
-          id: user._id,
-        },
+        payload: user,
       });
     } catch (error) {
       dispatch({ type: 'HAS_ERROR' });
@@ -122,14 +113,27 @@ export const userStore = () => {
       } = await axios.post(`http://localhost:5000/api/user/search?search=${event.target.value}`);
       const fetchedUsers: IContact[] = [];
       for (let i = 0; i < users.length; i++) {
-        const existedContactIndex = userInfo.contacts.data.findIndex((user) => user.id === users[i]._id);
+        const existedContactIndex = userInfo.contacts.data.findIndex((user) => user.contactUserId === users[i]._id);
         if (existedContactIndex !== -1) {
           fetchedUsers.unshift(userInfo.contacts.data[existedContactIndex]);
         } else {
           const user = {
             ...users[i],
-            id: '',
-            userId: userInfo.id,
+            _id: '',
+            chatType: 'PRIVATE',
+            createdBy: userInfo._id,
+            users: [
+              {
+                userId: userInfo._id,
+                name: userInfo.name,
+              },
+              {
+                userId: users[i]._id,
+                name: users[i].name,
+              },
+            ],
+            lastUpdatedBy: userInfo._id,
+            userId: userInfo._id,
             contactUserId: users[i]._id,
             lastMessage: '',
             unreadNotifications: 0,

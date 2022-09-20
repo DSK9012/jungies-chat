@@ -1,7 +1,6 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
-import { socket } from 'helpers/socket';
 import UserSearch from './UserSearch';
 import UsersHeader from './UsersHeader';
 import Contacts from './Contacts';
@@ -28,15 +27,6 @@ export default function UsersList() {
   const {
     userContext: { searchUsers, dispatch },
   } = useStore();
-
-  useEffect(() => {
-    socket.on('new-contact-updated', (data) => {
-      dispatch({
-        type: 'UPDATE_CONTACT',
-        payload: data,
-      });
-    });
-  }, []);
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setSearchMode(true);

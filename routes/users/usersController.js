@@ -6,7 +6,7 @@ const User = require('./usersEntity');
 const userController = {
   getUser: async (user, successCB, errorCB) => {
     try {
-      const userInfo = await User.findById(user.id).select('-password').select('-avatar');
+      const userInfo = await User.findById(user._id).select('-password').select('-avatar');
       return successCB({ user: userInfo });
     } catch (error) {
       return errorCB(error.message);
@@ -62,7 +62,7 @@ const userController = {
       // creating payload
       const payload = {
         user: {
-          id: user.id,
+          _id: user._id,
           name: user.name,
         },
       };
@@ -100,7 +100,7 @@ const userController = {
       // creating payload
       const payload = {
         user: {
-          id: checkUser.id,
+          _id: checkUser._id,
           name: checkUser.name,
         },
       };

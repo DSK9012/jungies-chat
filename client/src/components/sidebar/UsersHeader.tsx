@@ -21,7 +21,7 @@ export default function UsersHeader() {
 
   return (
     <$Container>
-      <$UserImage src={`http://localhost:5000/api/user/avatar/${userInfo.id}`} width='50px' height='50px' />
+      <$UserImage src={`http://localhost:5000/api/user/avatar/${userInfo._id}`} width='50px' height='50px' />
       <MoreVertIcon sx={{ cursor: 'pointer' }} />
     </$Container>
   );

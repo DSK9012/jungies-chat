@@ -20,7 +20,7 @@ const RenderSearchedContacts = ({ handleClose }: IRenderSearchedContactsProps) =
 
   const handleSelectUser = (user: IContact) => {
     const modifiedUser = { ...user, messages: { ...user.messages, isLoading: true } };
-    dispatch({ type: 'SET_CONTACT', payload: modifiedUser });
+    dispatch({ type: 'SELECT_NEW_CONTACT', payload: modifiedUser });
     handleClose();
   };
 

@@ -94,7 +94,7 @@ export default function Users({ searchMode, handleClose }: IProps) {
       dispatch({ type: 'MESSAGES_LOADING', payload: user });
     }
     dispatch({
-      type: 'SET_SELECTED_USER',
+      type: 'SELECT_CONTACT',
       payload: user,
     });
   };

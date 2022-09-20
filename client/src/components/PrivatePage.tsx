@@ -27,6 +27,20 @@ const PrivatePage = () => {
       });
     });
 
+    socket.on('update-new-contact', (data) => {
+      dispatch({
+        type: 'UPDATE_NEW_CONTACT',
+        payload: data,
+      });
+    });
+
+    socket.on('add-new-contact', (data) => {
+      dispatch({
+        type: 'ADD_NEW_CONTACT',
+        payload: data,
+      });
+    });
+
     socket.on('message-sent', (newMessage) => {
       dispatch({
         type: 'MESSAGE_SENT',
@@ -34,20 +48,11 @@ const PrivatePage = () => {
       });
     });
 
-    socket.on('message', (message: IMessage) => {
-      // setSelectedUser((prevState) => {
-      //   if (prevState?.messages) {
-      //     const messages = [...prevState.messages];
-      //     messages.push(message);
-      //     return { ...prevState, messages };
-      //   }
-      //   return prevState;
-      // });
-      // setUserInfo((prevState) => {
-      //   prevState.contacts[0].messages.push(message);
-      //   return { ...prevState };
-      // });
-      console.log(message);
+    socket.on('message', (message) => {
+      dispatch({
+        type: 'MESSAGE',
+        payload: message,
+      });
     });
 
     socket.on('connect_error', (err) => {

@@ -43,7 +43,7 @@ io.of(PRIVATE_CHAT).use((socket, next) => {
 
 io.of(PRIVATE_CHAT).on('connection', async (socket) => {
   // Join the user to his associated room
-  socket.join(socket.user.id);
+  socket.join(socket.user._id);
 
   socket.emit('connection', 'User is connected to his room.');
   socket.emit('contacts', await fetchContacts(socket));

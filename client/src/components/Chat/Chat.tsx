@@ -5,7 +5,6 @@ import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { useStore } from 'store/Store';
 import startChat from 'assets/start-chat.svg';
-import RenderChatSkelton from './RenderChatSkelton';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
@@ -58,7 +57,7 @@ const $NoContactsText = styled('h4')(() => ({
 export default function Chat() {
   const {
     userContext: {
-      userInfo: { id },
+      userInfo: { _id },
       selectedUser,
     },
   } = useStore();
@@ -76,7 +75,7 @@ export default function Chat() {
     <$Container>
       {/* {selectedUser?.messages.isLoading && <RenderChatSkelton />} */}
       {selectedUser?.messages.data.map((message) => (
-        <$Message className={message.sentBy.userId === id ? 'right' : 'left'}>
+        <$Message className={message.sentBy.userId === _id ? 'right' : 'left'}>
           {message.message}
           <$MsgTime>
             {format(parseISO(message.createdAt), 'h:mm aaa')}

@@ -4,6 +4,19 @@ import { Actions } from './action-types';
 
 export const userInfoReducer = (prevState: IStore, action: Actions): IStore => {
   switch (action.type) {
+    case 'AUTHENTICATED': {
+      return {
+        ...prevState,
+        userInfo: {
+          ...prevState.userInfo,
+          isAuthenticated: true,
+          isLoading: false,
+          hasError: false,
+          ...action.payload,
+        },
+      };
+    }
+
     case 'USER_LOADING': {
       return { ...prevState, userInfo: { ...prevState.userInfo, isLoading: true } };
     }
@@ -16,19 +29,6 @@ export const userInfoReducer = (prevState: IStore, action: Actions): IStore => {
       return {
         ...prevState,
         userInfo: { ...prevState.userInfo, isLoading: false, hasError: false, ...action.payload },
-      };
-    }
-
-    case 'AUTHENTICATED': {
-      return {
-        ...prevState,
-        userInfo: {
-          ...prevState.userInfo,
-          isAuthenticated: true,
-          isLoading: false,
-          hasError: false,
-          ...action.payload,
-        },
       };
     }
 
@@ -85,97 +85,6 @@ export const userInfoReducer = (prevState: IStore, action: Actions): IStore => {
       return prevState;
     }
 
-    case 'SET_CONTACT': {
-      return {
-        ...prevState,
-        userInfo: {
-          ...prevState.userInfo,
-          contacts: {
-            ...prevState.userInfo.contacts,
-            data: [action.payload, ...prevState.userInfo.contacts.data],
-          },
-        },
-        selectedUser: action.payload,
-      };
-    }
-
-    case 'UPDATE_NEW_CONTACT': {
-      const { newContact, newMessage } = action.payload;
-      const contacts = [...prevState.userInfo.contacts.data];
-      const index = contacts.findIndex((contact) => contact.id === '');
-      if (index !== -1) {
-        const msgs = [...contacts[index].messages.data];
-        const msgIndex = msgs.findIndex((msg) => msg.chatId === '');
-        msgs[msgIndex].id = newMessage._id;
-        msgs[msgIndex].chatId = newMessage.chatId;
-        msgs[msgIndex].status = newMessage.status;
-        contacts[index] = {
-          ...contacts[index],
-          id: newContact._id,
-          messages: {
-            ...contacts[index].messages,
-            data: msgs,
-          },
-        };
-        return {
-          ...prevState,
-          userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, data: contacts } },
-          selectedUser: prevState.selectedUser?.id === '' ? contacts[index] : prevState.selectedUser,
-        };
-      }
-      return prevState;
-    }
-
-    case 'UPDATE_CONTACT': {
-      const newMessage = action.payload;
-      const contacts = [...prevState.userInfo.contacts.data];
-      const contactIndex = contacts.findIndex((contact) => contact.id === action.payload.chatId);
-      if (contactIndex !== -1) {
-        const msgs = [...contacts[contactIndex].messages.data];
-        const msgIndex = msgs.findIndex((msg) => msg.id === '');
-        msgs[msgIndex].id = newMessage._id;
-        msgs[msgIndex].status = newMessage.status;
-        contacts[contactIndex] = {
-          ...contacts[contactIndex],
-          messages: {
-            ...contacts[contactIndex].messages,
-            data: msgs,
-          },
-        };
-
-        return {
-          ...prevState,
-          userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, data: contacts } },
-          selectedUser:
-            prevState.selectedUser?.id === contacts[contactIndex].id ? contacts[contactIndex] : prevState.selectedUser,
-        };
-      }
-
-      return prevState;
-    }
-
-    case 'SET_MESSAGE': {
-      const userIndex = prevState.userInfo.contacts.data.findIndex(
-        (contact) => contact.contactUserId === action.payload.contactUserId
-      );
-      const contacts = [...prevState.userInfo.contacts.data];
-      if (userIndex !== -1) {
-        contacts.splice(userIndex, 1);
-        contacts.unshift(action.payload);
-      } else {
-        contacts[userIndex] = action.payload;
-      }
-
-      return {
-        ...prevState,
-        userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, data: contacts } },
-      };
-    }
-
-    case 'UPDATE_MESSAGE': {
-      return prevState;
-    }
-
     case 'SEARCH_USERS_LOADING': {
       return {
         ...prevState,
@@ -197,9 +106,23 @@ export const userInfoReducer = (prevState: IStore, action: Actions): IStore => {
       };
     }
 
-    case 'SET_SELECTED_USER': {
+    case 'SELECT_CONTACT': {
       return {
         ...prevState,
+        selectedUser: action.payload,
+      };
+    }
+
+    case 'SELECT_NEW_CONTACT': {
+      return {
+        ...prevState,
+        userInfo: {
+          ...prevState.userInfo,
+          contacts: {
+            ...prevState.userInfo.contacts,
+            data: [action.payload, ...prevState.userInfo.contacts.data],
+          },
+        },
         selectedUser: action.payload,
       };
     }
@@ -207,11 +130,11 @@ export const userInfoReducer = (prevState: IStore, action: Actions): IStore => {
     case 'SEND_MESSAGE': {
       const date = new Date().toISOString();
       const message = {
-        id: '',
-        chatId: prevState.selectedUser?.id || '',
+        _id: '',
+        chatId: prevState.selectedUser?._id || '',
         sentBy: {
           name: prevState.userInfo.name,
-          userId: prevState.userInfo.id,
+          userId: prevState.userInfo._id,
         },
         sentTo: {
           name: prevState.selectedUser?.name || '',
@@ -233,13 +156,16 @@ export const userInfoReducer = (prevState: IStore, action: Actions): IStore => {
       const user = {
         ...contacts[contactIndex],
         lastMessage: action.payload,
+        lastUpdatedBy: prevState.userInfo._id,
+        updatedAt: date,
+        unreadNotifications: (prevState.selectedUser?.unreadNotifications ?? 0) + 1,
         messages: { ...contacts[contactIndex].messages, data: messages },
       };
-      if (contactIndex !== -1) {
+      if (!contacts.length) {
+        contacts.push(user);
+      } else {
         contacts.splice(contactIndex, 1);
         contacts.unshift(user);
-      } else {
-        contacts[contactIndex] = user;
       }
 
       return {
@@ -249,21 +175,48 @@ export const userInfoReducer = (prevState: IStore, action: Actions): IStore => {
       };
     }
 
-    case 'MESSAGE_SENT': {
-      const newMessage = action.payload;
+    case 'UPDATE_NEW_CONTACT': {
+      const { newContact, newMessage } = action.payload;
       const contacts = [...prevState.userInfo.contacts.data];
-      const contactIndex = contacts.findIndex((contact) => contact.id === action.payload.chatId);
+      const contactIndex = contacts.findIndex((contact) => contact.contactUserId === newMessage.sentTo.userId);
       if (contactIndex !== -1) {
         const msgs = [...contacts[contactIndex].messages.data];
-        const msgIndex = msgs.findIndex((msg) => msg.id === '');
-        if (msgIndex === -1) {
-          msgs.push({ ...newMessage, id: newMessage._id });
-        } else {
-          msgs[msgIndex] = { ...newMessage, id: newMessage._id, status: newMessage.status };
-        }
+        const msgIndex = msgs.findIndex((msg) => msg.chatId === '');
+        msgs[msgIndex]._id = newMessage._id;
+        msgs[msgIndex].chatId = newMessage.chatId;
+        msgs[msgIndex].status = newMessage.status;
         contacts[contactIndex] = {
-          ...contacts[contactIndex],
-          lastMessage: newMessage.message,
+          ...newContact,
+          messages: {
+            ...contacts[contactIndex].messages,
+            data: msgs,
+          },
+          unreadNotifications: contacts[contactIndex].unreadNotifications + 1,
+        };
+        return {
+          ...prevState,
+          userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, data: contacts } },
+          selectedUser:
+            prevState.selectedUser?.contactUserId === newMessage.sentTo.userId
+              ? contacts[contactIndex]
+              : prevState.selectedUser,
+        };
+      }
+      return prevState;
+    }
+
+    case 'ADD_NEW_CONTACT': {
+      const { newContact, newMessage } = action.payload;
+      const contacts = [...prevState.userInfo.contacts.data];
+      const contactIndex = contacts.findIndex(
+        (contact) => contact.contactUserId === newContact.contactUserId || contact.contactUserId === newContact.userId
+      );
+      if (contactIndex !== -1) {
+        const msgs = [...contacts[contactIndex].messages.data];
+        msgs.push(newMessage);
+        contacts[contactIndex] = {
+          ...newContact,
+          unreadNotifications: contacts[contactIndex].unreadNotifications + 1,
           messages: {
             ...contacts[contactIndex].messages,
             data: msgs,
@@ -274,7 +227,95 @@ export const userInfoReducer = (prevState: IStore, action: Actions): IStore => {
           ...prevState,
           userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, data: contacts } },
           selectedUser:
-            prevState.selectedUser?.id === contacts[contactIndex].id ? contacts[contactIndex] : prevState.selectedUser,
+            prevState.selectedUser?.contactUserId === newContact.contactUserId ||
+            prevState.selectedUser?.contactUserId === newContact.userId
+              ? contacts[contactIndex]
+              : prevState.selectedUser,
+        };
+      }
+      const isSelf = prevState.userInfo._id === newMessage.sentBy.userId;
+      contacts.unshift({
+        ...newContact,
+        userId: isSelf ? newContact.userId : newContact.contactUserId,
+        contactUserId: isSelf ? newContact.contactUserId : newContact.userId,
+        name: isSelf ? newContact.name : newMessage.sentBy.name,
+        messages: {
+          isLoading: false,
+          hasError: false,
+          data: [newMessage],
+        },
+        unreadNotifications: 1,
+      });
+      return {
+        ...prevState,
+        userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, data: contacts } },
+      };
+    }
+
+    case 'MESSAGE_SENT': {
+      const newMessage = action.payload;
+      const contacts = [...prevState.userInfo.contacts.data];
+      const contactIndex = contacts.findIndex((contact) => contact._id === action.payload.chatId);
+      if (contactIndex !== -1) {
+        const msgs = [...contacts[contactIndex].messages.data];
+        const msgIndex = msgs.findIndex((msg) => msg._id === '');
+        if (msgIndex === -1) {
+          msgs.push(newMessage);
+        } else {
+          msgs[msgIndex] = newMessage;
+        }
+        contacts[contactIndex] = {
+          ...contacts[contactIndex],
+          lastMessage: newMessage.message,
+          lastUpdatedBy: newMessage.sentBy.userId,
+          unreadNotifications: contacts[contactIndex].unreadNotifications + 1,
+          updatedAt: newMessage.updatedAt,
+          messages: {
+            ...contacts[contactIndex].messages,
+            data: msgs,
+          },
+        };
+
+        return {
+          ...prevState,
+          userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, data: contacts } },
+          selectedUser:
+            prevState.selectedUser?._id === contacts[contactIndex]._id
+              ? contacts[contactIndex]
+              : prevState.selectedUser,
+        };
+      }
+      return prevState;
+    }
+
+    case 'MESSAGE': {
+      const newMessage = action.payload;
+      const contacts = [...prevState.userInfo.contacts.data];
+      const contactIndex = contacts.findIndex((contact) => contact._id === action.payload.chatId);
+      if (contactIndex !== -1) {
+        const msgs = [...contacts[contactIndex].messages.data];
+        msgs.push(newMessage);
+        const contact = {
+          ...contacts[contactIndex],
+          lastMessage: newMessage.message,
+          lastUpdatedBy: newMessage.sentBy.userId,
+          unreadNotifications: contacts[contactIndex].unreadNotifications + 1,
+          updatedAt: newMessage.updatedAt,
+          messages: {
+            ...contacts[contactIndex].messages,
+            data: msgs,
+          },
+        };
+        contacts.splice(contactIndex, 1);
+        contacts.unshift(contact);
+
+        return {
+          ...prevState,
+          userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, data: contacts } },
+          selectedUser:
+            prevState.selectedUser?._id === contacts[contactIndex]._id
+              ? contacts[contactIndex]
+              : prevState.selectedUser,
         };
       }
       return prevState;
