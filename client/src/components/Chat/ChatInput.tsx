@@ -1,5 +1,5 @@
 import { InputAdornment, styled, TextField } from '@mui/material';
-import { ChangeEvent, useState, KeyboardEvent } from 'react';
+import { ChangeEvent, useState, KeyboardEvent, useRef, useEffect } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import { useStore } from 'store/Store';
@@ -14,9 +14,10 @@ const $Container = styled('div')(() => ({
 }));
 
 export default function ChatInput() {
+  const inputRef = useRef<HTMLInputElement>();
   const [msg, setMsg] = useState<string>('');
   const {
-    userContext: { dispatch },
+    userContext: { selectedUser, dispatch },
   } = useStore();
 
   const handleSubmit = () => {
@@ -41,9 +42,16 @@ export default function ChatInput() {
     }
   };
 
+  useEffect(() => {
+    if (selectedUser && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [selectedUser]);
+
   return (
     <$Container>
       <TextField
+        inputRef={inputRef}
         multiline
         maxRows={5}
         size='small'
@@ -54,12 +62,12 @@ export default function ChatInput() {
         InputProps={{
           startAdornment: (
             <InputAdornment position='start'>
-              <EmojiEmotionsIcon htmlColor='#47e7e7' fontSize='small' />
+              <EmojiEmotionsIcon htmlColor='#47e7e7' fontSize='small' sx={{ cursor: 'pointer' }} />
             </InputAdornment>
           ),
           endAdornment: (
             <InputAdornment position='end' onClick={handleSubmit}>
-              <SendIcon htmlColor='#47e7e7' fontSize='small' />
+              <SendIcon htmlColor='#47e7e7' fontSize='small' sx={{ cursor: 'pointer' }} />
             </InputAdornment>
           ),
         }}

@@ -1,10 +1,8 @@
-/* eslint-disable no-nested-ternary */
-import { format, parseISO } from 'date-fns';
 import { styled } from '@mui/material';
-import DoneIcon from '@mui/icons-material/Done';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { useStore } from 'store/Store';
 import startChat from 'assets/start-chat.svg';
+import RenderMessage from './RenderMessage';
+import RenderChatSkelton from './RenderChatSkelton';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
@@ -15,24 +13,6 @@ const $Container = styled('div')(() => ({
   overflow: 'auto',
   '&::-webkit-scrollbar': {
     display: 'none',
-  },
-}));
-
-const $Message = styled('div')(() => ({
-  border: '2px solid #47e7e7',
-  padding: '10px 16px',
-  margin: '0 auto 8px',
-  backgroundColor: '#47e7e70d',
-  color: '#47e7e7',
-  borderRadius: '5px',
-  fontSize: '14px',
-  width: 'fit-content',
-  maxWidth: '60%',
-  '&.left': {
-    marginLeft: '0',
-  },
-  '&.right': {
-    marginRight: '0',
   },
 }));
 
@@ -56,10 +36,7 @@ const $NoContactsText = styled('h4')(() => ({
 
 export default function Chat() {
   const {
-    userContext: {
-      userInfo: { _id },
-      selectedUser,
-    },
+    userContext: { selectedUser },
   } = useStore();
 
   if (!selectedUser?.messages?.data.length) {
@@ -73,19 +50,9 @@ export default function Chat() {
 
   return (
     <$Container>
-      {/* {selectedUser?.messages.isLoading && <RenderChatSkelton />} */}
+      {selectedUser?.messages.isLoading && <RenderChatSkelton />}
       {selectedUser?.messages.data.map((message) => (
-        <$Message className={message.sentBy.userId === _id ? 'right' : 'left'}>
-          {message.message}
-          <$MsgTime>
-            {format(parseISO(message.createdAt), 'h:mm aaa')}
-            {message.status.toLowerCase() === 'sent' ? (
-              <DoneIcon sx={{ fontSize: '16px' }} />
-            ) : message.status.toLowerCase() === 'delivered' ? (
-              <DoneAllIcon />
-            ) : null}
-          </$MsgTime>
-        </$Message>
+        <RenderMessage message={message} />
       ))}
     </$Container>
   );
