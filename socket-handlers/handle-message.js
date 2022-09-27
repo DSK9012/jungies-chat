@@ -90,7 +90,12 @@ const handleExistedContactMessage = async (socket, message) => {
       usersReadMessage: [],
     });
     await newMessage.save();
-    socket.emit('message-sent', newMessage);
+    socket.emit('message-sent', newMessage, async () => {
+      const message = await Message.findById(newMessage._id);
+      message.status = 'DELIVERED';
+      await message.save();
+      socket.emit('message-delivered', message);
+    });
     socket.to(socket.user._id).to(message.sentTo.userId).emit('message', newMessage);
   } catch (error) {
     console.log(error);

@@ -18,10 +18,17 @@ const $UserInfo = styled('div')(() => ({
 
 const $UserName = styled('h4')(() => ({
   fontSize: '18px',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
 }));
 
 const $LastMessage = styled('p')(() => ({
   fontSize: '12px',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  width: '300px',
 }));
 
 export default function UserChatHeader() {
@@ -35,11 +42,13 @@ export default function UserChatHeader() {
 
   return (
     <$Container>
-      <$UserImage
-        src={`http://localhost:5000/api/user/avatar/${selectedUser.contactUserId}`}
-        width='50px'
-        height='50px'
-      />
+      <div>
+        <$UserImage
+          src={`http://localhost:5000/api/user/avatar/${selectedUser.contactUserId}`}
+          width='50px'
+          height='50px'
+        />
+      </div>
       <$UserInfo>
         <$UserName>{selectedUser.name}</$UserName>
         <$LastMessage>{selectedUser.lastMessage}</$LastMessage>

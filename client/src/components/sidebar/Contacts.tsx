@@ -19,11 +19,13 @@ export const $Container = styled('div')(() => ({
 }));
 
 export const $UserContainer = styled('div')(() => ({
+  position: 'relative',
   display: 'flex',
   alignItems: 'center',
   width: '100%',
   padding: '8px 12px',
   cursor: 'pointer',
+  overflow: 'hidden',
   '&:hover': {
     backgroundColor: '#67676766',
     backdropFilter: 'blur(100px)',
@@ -43,11 +45,19 @@ export const $UserInfo = styled('div')(() => ({
 }));
 
 export const $UserName = styled('h4')(() => ({
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
   fontSize: '18px',
+  marginBottom: '4px',
 }));
 
 export const $LastMessage = styled('p')(() => ({
   fontSize: '12px',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  width: '250px',
 }));
 
 const $SearchingText = styled('p')(() => ({

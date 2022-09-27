@@ -62,9 +62,9 @@ const RenderMessage = ({ message }: IRenderMessageProps) => {
         {message.status.toLowerCase() === 'sent' ? (
           <DoneIcon sx={{ fontSize: '14px', color: '#a7b0b6' }} />
         ) : message.status.toLowerCase() === 'delivered' ? (
-          <DoneAllIcon
-            sx={{ fontSize: '14px', color: message.status.toLowerCase() === 'delivered' ? '#a7b0b6' : '#47e7e7' }}
-          />
+          <DoneAllIcon sx={{ fontSize: '14px', color: '#a7b0b6' }} />
+        ) : message.status.toLowerCase() === 'read' ? (
+          <DoneAllIcon sx={{ fontSize: '14px', color: '#47e7e7' }} />
         ) : (
           <AccessTimeIcon sx={{ fontSize: '14px', color: '#a7b0b6' }} />
         )}

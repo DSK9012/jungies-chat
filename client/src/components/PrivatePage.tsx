@@ -41,11 +41,20 @@ const PrivatePage = () => {
       });
     });
 
-    socket.on('message-sent', (newMessage) => {
+    socket.on('message-sent', (newMessage, callback) => {
       dispatch({
         type: 'MESSAGE_SENT',
         payload: newMessage,
       });
+      callback();
+    });
+
+    socket.on('message-delivered', (newMessage) => {
+      dispatch({
+        type: 'MESSAGE_SENT',
+        payload: newMessage,
+      });
+      // callback();
     });
 
     socket.on('message', (message) => {

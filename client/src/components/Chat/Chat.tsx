@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
 import startChat from 'assets/start-chat.svg';
@@ -35,9 +36,16 @@ const $NoContactsText = styled('h4')(() => ({
 }));
 
 export default function Chat() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const {
     userContext: { selectedUser },
   } = useStore();
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({ top: containerRef.current.scrollHeight });
+    }
+  }, [selectedUser]);
 
   if (!selectedUser?.messages?.data.length) {
     return (
@@ -49,7 +57,7 @@ export default function Chat() {
   }
 
   return (
-    <$Container>
+    <$Container ref={containerRef}>
       {selectedUser?.messages.isLoading && <RenderChatSkelton />}
       {selectedUser?.messages.data.map((message) => (
         <RenderMessage message={message} />
