@@ -4,13 +4,14 @@ import { useStore } from 'store/Store';
 import startChat from 'assets/start-chat.svg';
 import RenderMessage from './RenderMessage';
 import RenderChatSkelton from './RenderChatSkelton';
+import RenderChatDate from './RenderChatDate';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
   height: '100%',
-  padding: '4px 16px',
+  padding: '4px 0',
   overflow: 'auto',
   '&::-webkit-scrollbar': {
     display: 'none',
@@ -59,8 +60,11 @@ export default function Chat() {
   return (
     <$Container ref={containerRef}>
       {selectedUser?.messages.isLoading && <RenderChatSkelton />}
-      {selectedUser?.messages.data.map((message) => (
-        <RenderMessage message={message} />
+      {selectedUser?.messages.data.map((message, index, messages) => (
+        <>
+          <RenderChatDate index={index} messages={messages} />
+          <RenderMessage message={message} />
+        </>
       ))}
     </$Container>
   );

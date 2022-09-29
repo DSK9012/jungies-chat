@@ -18,10 +18,10 @@ const $Message = styled('div')(() => ({
   width: 'fit-content',
   maxWidth: '60%',
   '&.left': {
-    marginLeft: '0',
+    marginLeft: '16px',
   },
   '&.right': {
-    marginRight: '0',
+    marginRight: '16px',
   },
 }));
 
