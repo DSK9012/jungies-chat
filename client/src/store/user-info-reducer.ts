@@ -288,6 +288,38 @@ export const userInfoReducer = (prevState: IStore, action: Actions): IStore => {
       return prevState;
     }
 
+    case 'MESSAGE_DELIVERED': {
+      const newMessage = action.payload;
+      const contacts = [...prevState.userInfo.contacts.data];
+      const contactIndex = contacts.findIndex((contact) => contact._id === action.payload.chatId);
+      if (contactIndex !== -1) {
+        const msgs = [...contacts[contactIndex].messages.data];
+        const msgIndex = msgs.findIndex((msg) => msg._id === newMessage._id);
+        msgs[msgIndex] = newMessage;
+        contacts[contactIndex] = {
+          ...contacts[contactIndex],
+          lastMessage: newMessage.message,
+          lastUpdatedBy: newMessage.sentBy.userId,
+          unreadNotifications: contacts[contactIndex].unreadNotifications + 1,
+          updatedAt: newMessage.updatedAt,
+          messages: {
+            ...contacts[contactIndex].messages,
+            data: msgs,
+          },
+        };
+
+        return {
+          ...prevState,
+          userInfo: { ...prevState.userInfo, contacts: { ...prevState.userInfo.contacts, data: contacts } },
+          selectedUser:
+            prevState.selectedUser?._id === contacts[contactIndex]._id
+              ? contacts[contactIndex]
+              : prevState.selectedUser,
+        };
+      }
+      return prevState;
+    }
+
     case 'MESSAGE': {
       const newMessage = action.payload;
       const contacts = [...prevState.userInfo.contacts.data];

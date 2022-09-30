@@ -20,4 +20,5 @@ export type Actions =
   | { type: 'UPDATE_NEW_CONTACT'; payload: { newContact: IServerContact; newMessage: IMessage } }
   | { type: 'ADD_NEW_CONTACT'; payload: { newContact: IServerContact; newMessage: IMessage } }
   | { type: 'MESSAGE_SENT'; payload: IMessage }
+  | { type: 'MESSAGE_DELIVERED'; payload: IMessage }
   | { type: 'MESSAGE'; payload: IMessage };

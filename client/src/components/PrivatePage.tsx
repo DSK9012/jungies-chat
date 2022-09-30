@@ -27,40 +27,62 @@ const PrivatePage = () => {
       });
     });
 
-    socket.on('update-new-contact', (data) => {
+    socket.on('user/update-new-contact', (data) => {
       dispatch({
         type: 'UPDATE_NEW_CONTACT',
         payload: data,
       });
     });
 
-    socket.on('add-new-contact', (data) => {
+    socket.on('user/other-tab/update-new-contact', (data) => {
       dispatch({
         type: 'ADD_NEW_CONTACT',
         payload: data,
       });
     });
 
-    socket.on('message-sent', (newMessage, callback) => {
+    socket.on('contact/add-new-contact', (data, callback) => {
       dispatch({
-        type: 'MESSAGE_SENT',
-        payload: newMessage,
+        type: 'ADD_NEW_CONTACT',
+        payload: data,
       });
       callback();
     });
 
-    socket.on('message-delivered', (newMessage) => {
+    socket.on('user/message-sent', (newMessage) => {
       dispatch({
         type: 'MESSAGE_SENT',
         payload: newMessage,
       });
-      // callback();
     });
 
-    socket.on('message', (message) => {
+    socket.on('user/other-tab/message', (message) => {
       dispatch({
         type: 'MESSAGE',
         payload: message,
+      });
+    });
+
+    socket.on('contact/message', (message, callback) => {
+      console.log(message, callback);
+      dispatch({
+        type: 'MESSAGE',
+        payload: message,
+      });
+      // callback();
+    });
+
+    socket.on('user/message-delivered', (newMessage) => {
+      dispatch({
+        type: 'MESSAGE_DELIVERED',
+        payload: newMessage,
+      });
+    });
+
+    socket.on('user/other-tab/message-delivered', (newMessage) => {
+      dispatch({
+        type: 'MESSAGE_DELIVERED',
+        payload: newMessage,
       });
     });
 

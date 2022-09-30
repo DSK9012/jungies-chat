@@ -65,7 +65,9 @@ const handleNewContactMessage = async (socket, message) => {
       newMessage,
     });
     // inform opponent with new contact
-    socket.to(message.sentTo.userId).emit('contact/add-new-contact', { newContact: contact, newMessage });
+    socket.to(message.sentTo.userId).emit('contact/add-new-contact', { newContact: contact, newMessage }, () => {
+      console.log('delivered');
+    });
   } catch (error) {
     console.log(error);
   }
@@ -96,12 +98,13 @@ const handleExistedContactMessage = async (socket, message) => {
     await newMessage.save();
     socket.emit('user/message-sent', newMessage);
     socket.to(socket.user._id).emit('user/other-tab/message', newMessage);
-    socket.to(message.sentTo.userId).emit('contact/message', newMessage, async () => {
-      const message = await Message.findById(newMessage._id);
-      message.status = 'DELIVERED';
-      await message.save();
-      socket.emit('user/message-delivered', message);
-      socket.emit('user/other-tab/message-delivered', message);
+    socket.to(message.sentTo.userId).emit('contact/message', newMessage, () => {
+      console.log('delivered....');
+      // const message = await Message.findById(newMessage._id);
+      // message.status = 'DELIVERED';
+      // await message.save();
+      // socket.emit('user/message-delivered', message);
+      // socket.to(socket.user._id).emit('user/other-tab/message-delivered', message);
     });
   } catch (error) {
     console.log(error);
