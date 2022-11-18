@@ -4,7 +4,7 @@ import { useStore } from 'store/Store';
 const $Container = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
-  width: '100%',
+  // width: '100%',
   padding: '8px 16px',
 }));
 
@@ -14,6 +14,8 @@ const $UserImage = styled('img')(() => ({
 
 const $UserInfo = styled('div')(() => ({
   marginLeft: '16px',
+  flex: 1,
+  overflow: 'hidden',
 }));
 
 const $UserName = styled('h4')(() => ({
@@ -28,7 +30,7 @@ const $LastMessage = styled('p')(() => ({
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  width: '300px',
+  // width: '90%',
 }));
 
 export default function UserChatHeader() {

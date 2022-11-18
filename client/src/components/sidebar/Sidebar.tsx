@@ -6,7 +6,7 @@ import UsersHeader from './UsersHeader';
 import Contacts from './Contacts';
 
 const $Container = styled('div')(({ theme }) => ({
-  width: '450px',
+  width: '350px',
   backgroundColor: 'rgb(255,255,255, 0.1)',
   backdropFilter: 'blur(50px)',
   height: '90%',

@@ -6,17 +6,11 @@ import UserChatHeader from 'components/Chat/UserChatHeader';
 import Chat from './Chat';
 
 const $Container = styled('div')(({ theme }) => ({
-  height: '90%',
-  width: '100%',
-  backdropFilter: 'blur(30px)',
-  backgroundColor: 'rgb(255,255,255, 0.1)',
-  border: '1px solid rgb(255,255,255, 0.6)',
-  borderRightColor: 'rgb(255,255,255, 0.2)',
-  borderBottomColor: 'rgb(255,255,255, 0.2)',
-  borderRadius: '5px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  height: '100%',
+  overflow: 'auto',
 }));
 
 const $NoSelectedUserContainer = styled($Container)(() => ({
@@ -36,18 +30,48 @@ export default function ChatContent() {
 
   if (!selectedUser) {
     return (
-      <$NoSelectedUserContainer>
-        <img src={noUserSelected} alt='start-chat' width='400px' height='400px' />
-        <$NoContactsText>Select user to start chat</$NoContactsText>
-      </$NoSelectedUserContainer>
+      <div
+        style={{
+          height: '90%',
+          width: '100%',
+          backdropFilter: 'blur(30px)',
+          backgroundColor: 'rgb(255,255,255, 0.1)',
+          border: '1px solid rgb(255,255,255, 0.6)',
+          borderRightColor: 'rgb(255,255,255, 0.2)',
+          borderBottomColor: 'rgb(255,255,255, 0.2)',
+          borderRadius: '5px',
+          flex: 1,
+          overflow: 'hidden',
+        }}
+      >
+        <$NoSelectedUserContainer>
+          <img src={noUserSelected} alt='start-chat' width='400px' height='400px' />
+          <$NoContactsText>Select user to start chat</$NoContactsText>
+        </$NoSelectedUserContainer>
+      </div>
     );
   }
 
   return (
-    <$Container>
-      <UserChatHeader />
-      <Chat />
-      <ChatInput />
-    </$Container>
+    <div
+      style={{
+        height: '90%',
+        width: '100%',
+        backdropFilter: 'blur(30px)',
+        backgroundColor: 'rgb(255,255,255, 0.1)',
+        border: '1px solid rgb(255,255,255, 0.6)',
+        borderRightColor: 'rgb(255,255,255, 0.2)',
+        borderBottomColor: 'rgb(255,255,255, 0.2)',
+        borderRadius: '5px',
+        flex: 1,
+        overflow: 'hidden',
+      }}
+    >
+      <$Container>
+        <UserChatHeader />
+        <Chat />
+        <ChatInput />
+      </$Container>
+    </div>
   );
 }
