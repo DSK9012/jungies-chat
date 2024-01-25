@@ -60,7 +60,7 @@ export const userStore = () => {
     try {
       const {
         data: { user, token },
-      } = await axios.post('http://localhost:5000/api/user/register', userData);
+      } = await axios.post('http://localhost:4000/api/user/register', userData);
       if (token) localStorage.setItem('token', token);
       dispatch({
         type: 'AUTHENTICATED',
@@ -75,7 +75,7 @@ export const userStore = () => {
     try {
       const {
         data: { user, token },
-      } = await axios.post('http://localhost:5000/api/user/login', userData);
+      } = await axios.post('http://localhost:4000/api/user/login', userData);
       if (token) localStorage.setItem('token', token);
       dispatch({
         type: 'AUTHENTICATED',
@@ -91,7 +91,7 @@ export const userStore = () => {
     try {
       const {
         data: { user },
-      } = await axios('http://localhost:5000/api/user');
+      } = await axios('http://localhost:4000/api/user');
       dispatch({
         type: 'AUTHENTICATED',
         payload: user,
@@ -110,7 +110,7 @@ export const userStore = () => {
     try {
       const {
         data: { users },
-      } = await axios.post(`http://localhost:5000/api/user/search?search=${event.target.value}`);
+      } = await axios.post(`http://localhost:4000/api/user/search?search=${event.target.value}`);
       const fetchedUsers: IContact[] = [];
       for (let i = 0; i < users.length; i++) {
         const existedContactIndex = userInfo.contacts.data.findIndex((user) => user.contactUserId === users[i]._id);

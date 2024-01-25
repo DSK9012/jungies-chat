@@ -40,7 +40,7 @@ const RenderContact = ({ user, handleSelectUser }: IRenderContactProps) => {
       onClick={() => handleSelectUser(user)}
     >
       <div>
-        <$UserImage src={`http://localhost:5000/api/user/avatar/${user.contactUserId}`} width='50px' height='50px' />
+        <$UserImage src={`http://localhost:4000/api/user/avatar/${user.contactUserId}`} width='50px' height='50px' />
       </div>
       <$UserInfo>
         <$UserName>{user.name}</$UserName>

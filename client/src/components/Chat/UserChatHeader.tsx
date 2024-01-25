@@ -46,7 +46,7 @@ export default function UserChatHeader() {
     <$Container>
       <div>
         <$UserImage
-          src={`http://localhost:5000/api/user/avatar/${selectedUser.contactUserId}`}
+          src={`http://localhost:4000/api/user/avatar/${selectedUser.contactUserId}`}
           width='50px'
           height='50px'
         />
