@@ -1,16 +1,6 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import {
-  Avatar,
-  TextField,
-  InputAdornment,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  Button,
-  styled,
-  Badge,
-} from '@mui/material';
+import { Avatar, InputAdornment, Button, styled, Badge, IconButton } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import PasswordIcon from '@mui/icons-material/Password';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -18,6 +8,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormTypes } from 'helpers/types';
 import useSignUpFormik, { SignUpFormik } from 'formik-config/SignUpUserFormik';
 import useFormikHelpers from 'formik-config/FormikHelpers';
@@ -64,6 +55,8 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
   const formik = useSignUpFormik();
   const { avatar, email, password, confirmPassword, name } = formik.values;
   const { handleChangeAndBlur, hasError, getHelpText } = useFormikHelpers<SignUpFormik>(formik);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValidImg(true);
@@ -196,14 +189,21 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
         placeholder='Password'
         fullWidth
         size='small'
+        type={showPassword ? 'text' : 'password'}
         InputProps={{
           startAdornment: (
             <InputAdornment position='start'>
               <PasswordIcon htmlColor='#47e7e7' fontSize='small' />
             </InputAdornment>
           ),
+          endAdornment: (
+            <InputAdornment position='end'>
+              <IconButton onClick={() => setShowPassword((prev) => !prev)} tabIndex={-1}>
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          ),
         }}
-        type='password'
         title=''
         name='password'
         value={password}
@@ -216,14 +216,21 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
         placeholder='Confirm Password'
         fullWidth
         size='small'
+        type={showConfirmPassword ? 'text' : 'password'}
         InputProps={{
           startAdornment: (
             <InputAdornment position='start'>
               <PasswordIcon htmlColor='#47e7e7' fontSize='small' />
             </InputAdornment>
           ),
+          endAdornment: (
+            <InputAdornment position='end'>
+              <IconButton onClick={() => setShowConfirmPassword((prev) => !prev)} tabIndex={-1}>
+                {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          ),
         }}
-        type='password'
         title=''
         name='confirmPassword'
         value={confirmPassword}
