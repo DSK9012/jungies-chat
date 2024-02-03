@@ -74,7 +74,7 @@ const $GlassCircleGradient3 = styled('span')(() => ({
 if (localStorage.getItem('token')) setAuthToken(localStorage.getItem('token'));
 
 function App() {
-  const [toggleHeaderStyle, setToggleHeaderStyle] = useState<boolean>(false);
+  const [toggleHeaderStyle, setToggleHeaderStyle] = useState<boolean>(true);
   const {
     userContext: {
       userInfo: { isLoading, isAuthenticated },

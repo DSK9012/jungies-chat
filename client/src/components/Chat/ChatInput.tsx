@@ -1,4 +1,4 @@
-import { InputAdornment, styled, TextField } from '@mui/material';
+import { Box, InputAdornment, styled, TextField } from '@mui/material';
 import { ChangeEvent, useState, KeyboardEvent, useRef, useEffect } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
@@ -50,30 +50,32 @@ export default function ChatInput() {
 
   return (
     <$Container>
-      <TextField
-        inputRef={inputRef}
-        multiline
-        maxRows={5}
-        size='small'
-        fullWidth
-        placeholder='Type a message'
-        spellCheck='false'
-        value={msg}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position='start'>
-              <EmojiEmotionsIcon htmlColor='#47e7e7' fontSize='small' sx={{ cursor: 'pointer' }} />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position='end' onClick={handleSubmit}>
-              <SendIcon htmlColor='#47e7e7' fontSize='small' sx={{ cursor: 'pointer' }} />
-            </InputAdornment>
-          ),
-        }}
-        onChange={handleChange}
-        onKeyPress={handleKeyPress}
-      />
+      <Box width='70%' margin='0 auto'>
+        <TextField
+          inputRef={inputRef}
+          multiline
+          maxRows={5}
+          size='small'
+          fullWidth
+          placeholder='Type a message'
+          spellCheck='false'
+          value={msg}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <EmojiEmotionsIcon htmlColor='#47e7e7' fontSize='small' sx={{ cursor: 'pointer' }} />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position='end' onClick={handleSubmit}>
+                <SendIcon htmlColor='#47e7e7' fontSize='small' sx={{ cursor: 'pointer' }} />
+              </InputAdornment>
+            ),
+          }}
+          onChange={handleChange}
+          onKeyPress={handleKeyPress}
+        />
+      </Box>
     </$Container>
   );
 }

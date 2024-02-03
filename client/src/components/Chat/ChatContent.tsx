@@ -1,6 +1,6 @@
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
-import noUserSelected from 'assets/no-user-selected.svg';
+import { ReactComponent as NoUserSelectedImg } from 'assets/no-user-selected.svg';
 import ChatInput from 'components/Chat/ChatInput';
 import UserChatHeader from 'components/Chat/UserChatHeader';
 import Chat from './Chat';
@@ -45,7 +45,7 @@ export default function ChatContent() {
         }}
       >
         <$NoSelectedUserContainer>
-          <img src={noUserSelected} alt='start-chat' width='400px' height='400px' />
+          <NoUserSelectedImg width='400px' height='400px' />
           <$NoContactsText>Select user to start chat</$NoContactsText>
         </$NoSelectedUserContainer>
       </div>

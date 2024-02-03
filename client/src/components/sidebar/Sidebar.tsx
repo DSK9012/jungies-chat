@@ -32,6 +32,7 @@ export default function UsersList() {
     setSearchMode(true);
     setSearchText(event.target.value);
     if (!event.target.value) {
+      setSearchMode(false);
       dispatch({
         type: 'GET_SEARCH_USERS',
         payload: [],

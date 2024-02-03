@@ -19,11 +19,14 @@ export default function UserSearch({ handleBlur, handleChange, handleClose, sear
   return (
     <$Container>
       <TextField
+        type='search'
+        name='search'
         size='small'
         fullWidth
-        placeholder='Search user to start chat'
+        placeholder='Search...'
         value={searchText}
         spellCheck='false'
+        autoComplete='off'
         InputProps={{
           endAdornment: searchMode ? (
             <InputAdornment position='end'>
@@ -34,6 +37,11 @@ export default function UserSearch({ handleBlur, handleChange, handleClose, sear
               <Search htmlColor='#47e7e7' fontSize='small' sx={{ cursor: 'pointer' }} />
             </InputAdornment>
           ),
+        }}
+        sx={{
+          '& input::-webkit-search-cancel-button': {
+            display: 'none',
+          },
         }}
         onChange={handleChange}
         onBlur={handleBlur}

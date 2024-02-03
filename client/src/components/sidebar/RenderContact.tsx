@@ -1,7 +1,8 @@
-import { styled } from '@mui/material';
+import { Avatar, styled } from '@mui/material';
 import { IContact } from 'helpers/types';
 import { useStore } from 'store/Store';
-import { $UserContainer, $UserImage, $UserInfo, $UserName, $LastMessage } from './Contacts';
+import { getAvatarBgColor } from 'components/Chat/helpers';
+import { $UserContainer, $UserInfo, $UserName, $LastMessage } from './Contacts';
 
 interface IRenderContactProps {
   user: IContact;
@@ -39,9 +40,12 @@ const RenderContact = ({ user, handleSelectUser }: IRenderContactProps) => {
       className={selectedUser && user.contactUserId === selectedUser.contactUserId ? 'selected' : ''}
       onClick={() => handleSelectUser(user)}
     >
-      <div>
-        <$UserImage src={`http://localhost:4000/api/user/avatar/${user.contactUserId}`} width='50px' height='50px' />
-      </div>
+      <Avatar
+        src={`http://localhost:4000/api/user/avatar/${user.contactUserId}`}
+        sx={{ width: 45, height: 45, backgroundColor: getAvatarBgColor(user.name) }}
+      >
+        {user?.name?.charAt(0)}
+      </Avatar>
       <$UserInfo>
         <$UserName>{user.name}</$UserName>
         <$LastMessage>{user.lastMessage}</$LastMessage>

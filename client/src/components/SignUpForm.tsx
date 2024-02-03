@@ -144,171 +144,173 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
           Allowed image types are .jpg, jpeg, .png and size should not exceed 500 KB.
         </$UserAvatarFieldError>
       )}
-      <CustomTextField
-        placeholder='Display Name'
-        fullWidth
-        size='small'
-        spellCheck='false'
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position='start'>
-              <PersonIcon htmlColor='#47e7e7' fontSize='small' />
-            </InputAdornment>
-          ),
-        }}
-        type='text'
-        title=''
-        name='name'
-        value={name}
-        onChange={handleChangeAndBlur('name')}
-        error={hasError('name')}
-        helperText={getHelpText('name')}
-      />
-      <CustomTextField
-        placeholder='Email'
-        fullWidth
-        size='small'
-        spellCheck='false'
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position='start'>
-              <PersonIcon htmlColor='#47e7e7' fontSize='small' />
-            </InputAdornment>
-          ),
-        }}
-        type='text'
-        title=''
-        name='email'
-        value={email}
-        onChange={handleChangeAndBlur('email')}
-        error={hasError('email')}
-        helperText={getHelpText('email')}
-      />
-      <CustomTextField
-        spellCheck='false'
-        placeholder='Password'
-        fullWidth
-        size='small'
-        type={showPassword ? 'text' : 'password'}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position='start'>
-              <PasswordIcon htmlColor='#47e7e7' fontSize='small' />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position='end'>
-              <IconButton onClick={() => setShowPassword((prev) => !prev)} tabIndex={-1}>
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        title=''
-        name='password'
-        value={password}
-        onChange={handleChangeAndBlur('password')}
-        error={hasError('password')}
-        helperText={getHelpText('password')}
-      />
-      <CustomTextField
-        spellCheck='false'
-        placeholder='Confirm Password'
-        fullWidth
-        size='small'
-        type={showConfirmPassword ? 'text' : 'password'}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position='start'>
-              <PasswordIcon htmlColor='#47e7e7' fontSize='small' />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position='end'>
-              <IconButton onClick={() => setShowConfirmPassword((prev) => !prev)} tabIndex={-1}>
-                {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        title=''
-        name='confirmPassword'
-        value={confirmPassword}
-        onChange={handleChangeAndBlur('confirmPassword')}
-        error={hasError('confirmPassword')}
-        helperText={getHelpText('confirmPassword')}
-      />
-      <Button
-        fullWidth
-        variant='contained'
-        disabled={!formik.dirty || !formik.isValid || !(avatar ? validImg : true)}
-        sx={{
-          margin: '8px 0',
-        }}
-        onClick={handleSubmit}
-      >
-        Sign Up
-      </Button>
-      <$SignUpLink>
-        Have Account?{' '}
-        <Button size='small' disableRipple sx={{ fontSize: '16px' }} onClick={() => handleFormChange('sign-in-form')}>
-          Sign In
+      <form>
+        <CustomTextField
+          placeholder='Display Name'
+          fullWidth
+          size='small'
+          spellCheck='false'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <PersonIcon htmlColor='#47e7e7' fontSize='small' />
+              </InputAdornment>
+            ),
+          }}
+          type='text'
+          title=''
+          name='name'
+          value={name}
+          onChange={handleChangeAndBlur('name')}
+          error={hasError('name')}
+          helperText={getHelpText('name')}
+        />
+        <CustomTextField
+          placeholder='Email'
+          fullWidth
+          size='small'
+          spellCheck='false'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <PersonIcon htmlColor='#47e7e7' fontSize='small' />
+              </InputAdornment>
+            ),
+          }}
+          type='text'
+          title=''
+          name='email'
+          value={email}
+          onChange={handleChangeAndBlur('email')}
+          error={hasError('email')}
+          helperText={getHelpText('email')}
+        />
+        <CustomTextField
+          spellCheck='false'
+          placeholder='Password'
+          fullWidth
+          size='small'
+          type={showPassword ? 'text' : 'password'}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <PasswordIcon htmlColor='#47e7e7' fontSize='small' />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton onClick={() => setShowPassword((prev) => !prev)} tabIndex={-1}>
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          title=''
+          name='password'
+          value={password}
+          onChange={handleChangeAndBlur('password')}
+          error={hasError('password')}
+          helperText={getHelpText('password')}
+        />
+        <CustomTextField
+          spellCheck='false'
+          placeholder='Confirm Password'
+          fullWidth
+          size='small'
+          type={showConfirmPassword ? 'text' : 'password'}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <PasswordIcon htmlColor='#47e7e7' fontSize='small' />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton onClick={() => setShowConfirmPassword((prev) => !prev)} tabIndex={-1}>
+                  {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          title=''
+          name='confirmPassword'
+          value={confirmPassword}
+          onChange={handleChangeAndBlur('confirmPassword')}
+          error={hasError('confirmPassword')}
+          helperText={getHelpText('confirmPassword')}
+        />
+        <Button
+          fullWidth
+          variant='contained'
+          disabled={!formik.dirty || !formik.isValid || !(avatar ? validImg : true)}
+          sx={{
+            margin: '8px 0',
+          }}
+          onClick={handleSubmit}
+        >
+          Sign Up
         </Button>
-      </$SignUpLink>
-      <$SocialLogin>
-        <GoogleIcon
-          htmlColor='#47e7e7'
-          fontSize='medium'
-          sx={{
-            '&:hover': {
-              backgroundColor: '#47e7e70d',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              transform: 'scale(1.3)',
-              transition: '.3s',
-            },
-          }}
-        />
-        <InstagramIcon
-          htmlColor='#47e7e7'
-          fontSize='medium'
-          sx={{
-            '&:hover': {
-              backgroundColor: '#47e7e70d',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              transform: 'scale(1.3)',
-              transition: '.3s',
-            },
-          }}
-        />
-        <TwitterIcon
-          htmlColor='#47e7e7'
-          fontSize='medium'
-          sx={{
-            '&:hover': {
-              backgroundColor: '#47e7e70d',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              transform: 'scale(1.3)',
-              transition: '.3s',
-            },
-          }}
-        />
-        <LinkedInIcon
-          htmlColor='#47e7e7'
-          fontSize='medium'
-          sx={{
-            '&:hover': {
-              backgroundColor: '#47e7e70d',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              transform: 'scale(1.3)',
-              transition: '.3s',
-            },
-          }}
-        />
-      </$SocialLogin>
+        <$SignUpLink>
+          Have Account?{' '}
+          <Button size='small' disableRipple sx={{ fontSize: '16px' }} onClick={() => handleFormChange('sign-in-form')}>
+            Sign In
+          </Button>
+        </$SignUpLink>
+        <$SocialLogin>
+          <GoogleIcon
+            htmlColor='#47e7e7'
+            fontSize='medium'
+            sx={{
+              '&:hover': {
+                backgroundColor: '#47e7e70d',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                transform: 'scale(1.3)',
+                transition: '.3s',
+              },
+            }}
+          />
+          <InstagramIcon
+            htmlColor='#47e7e7'
+            fontSize='medium'
+            sx={{
+              '&:hover': {
+                backgroundColor: '#47e7e70d',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                transform: 'scale(1.3)',
+                transition: '.3s',
+              },
+            }}
+          />
+          <TwitterIcon
+            htmlColor='#47e7e7'
+            fontSize='medium'
+            sx={{
+              '&:hover': {
+                backgroundColor: '#47e7e70d',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                transform: 'scale(1.3)',
+                transition: '.3s',
+              },
+            }}
+          />
+          <LinkedInIcon
+            htmlColor='#47e7e7'
+            fontSize='medium'
+            sx={{
+              '&:hover': {
+                backgroundColor: '#47e7e70d',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                transform: 'scale(1.3)',
+                transition: '.3s',
+              },
+            }}
+          />
+        </$SocialLogin>
+      </form>
     </>
   );
 }

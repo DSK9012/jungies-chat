@@ -1,6 +1,6 @@
 import { useStore } from 'store/Store';
-import noSearchResults from 'assets/no-search-results.svg';
-import error from 'assets/error.svg';
+import { ReactComponent as NoSearchResulstsImg } from 'assets/no-search-results.svg';
+import { ReactComponent as ErrorImg } from 'assets/error.svg';
 import { IContact } from 'helpers/types';
 import { $Container, $NoContactsContainer, $NoContactsText } from './Contacts';
 import RenderContact from './RenderContact';
@@ -35,7 +35,7 @@ const RenderSearchedContacts = ({ handleClose }: IRenderSearchedContactsProps) =
   if (hasError) {
     return (
       <$NoContactsContainer>
-        <img src={error} alt='error' width='180px' height='200px' />
+        <ErrorImg width='180px' height='200px' />
         <$NoContactsText>Ooops, Please try again</$NoContactsText>
       </$NoContactsContainer>
     );
@@ -44,7 +44,7 @@ const RenderSearchedContacts = ({ handleClose }: IRenderSearchedContactsProps) =
   if (!data.length) {
     return (
       <$NoContactsContainer>
-        <img src={noSearchResults} alt='no-search-results' width='180px' height='200px' />
+        <NoSearchResulstsImg width='180px' height='200px' />
         <$NoContactsText>No search results</$NoContactsText>
       </$NoContactsContainer>
     );

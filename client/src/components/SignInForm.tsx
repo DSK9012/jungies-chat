@@ -70,137 +70,139 @@ export default function SignInForm({ handleFormChange }: ISignInFormProps) {
         </Avatar>
       </$AvatarContainer>
       <br />
-      <CustomTextField
-        placeholder='Email'
-        fullWidth
-        size='small'
-        spellCheck='false'
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position='start'>
-              <PersonIcon htmlColor='#47e7e7' fontSize='small' />
-            </InputAdornment>
-          ),
-        }}
-        type='text'
-        title=''
-        name='email'
-        value={email}
-        onChange={handleChangeAndBlur('email')}
-        error={hasError('email')}
-        helperText={getHelpText('email')}
-      />
-      <CustomTextField
-        spellCheck='false'
-        placeholder='Password'
-        fullWidth
-        size='small'
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position='start'>
-              <PasswordIcon htmlColor='#47e7e7' fontSize='small' />
-            </InputAdornment>
-          ),
-        }}
-        type={showPassword ? 'text' : 'password'}
-        title=''
-        name='password'
-        value={password}
-        onChange={handleChangeAndBlur('password')}
-        error={hasError('password')}
-        helperText={getHelpText('password')}
-      />
-      <FormGroup sx={{ margin: '0 0 10px 16px' }}>
-        <FormControlLabel
-          label='Show Password'
-          checked={showPassword}
-          onChange={() => setShowPassword((prevState) => !prevState)}
-          control={
-            <Checkbox
-              size='small'
-              sx={{
-                marginLeft: '0',
-                color: '#47e7e7',
-                '&.Mui-checked': {
+      <form>
+        <CustomTextField
+          placeholder='Email'
+          fullWidth
+          size='small'
+          spellCheck='false'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <PersonIcon htmlColor='#47e7e7' fontSize='small' />
+              </InputAdornment>
+            ),
+          }}
+          type='text'
+          title=''
+          name='email'
+          value={email}
+          onChange={handleChangeAndBlur('email')}
+          error={hasError('email')}
+          helperText={getHelpText('email')}
+        />
+        <CustomTextField
+          spellCheck='false'
+          placeholder='Password'
+          fullWidth
+          size='small'
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position='start'>
+                <PasswordIcon htmlColor='#47e7e7' fontSize='small' />
+              </InputAdornment>
+            ),
+          }}
+          type={showPassword ? 'text' : 'password'}
+          title=''
+          name='password'
+          value={password}
+          onChange={handleChangeAndBlur('password')}
+          error={hasError('password')}
+          helperText={getHelpText('password')}
+        />
+        <FormGroup sx={{ margin: '0 0 10px 16px' }}>
+          <FormControlLabel
+            label='Show Password'
+            checked={showPassword}
+            onChange={() => setShowPassword((prevState) => !prevState)}
+            control={
+              <Checkbox
+                size='small'
+                sx={{
+                  marginLeft: '0',
                   color: '#47e7e7',
-                },
-                '& .css-zddgej-MuiFormControlLabel-root .MuiFormControlLabel-label': {
-                  color: 'white',
-                },
-              }}
-            />
-          }
-          sx={{
-            '& .MuiFormControlLabel-label': {
-              color: '#e8e8e8',
-              fontSize: '16px',
-            },
-          }}
-        />
-      </FormGroup>
-      <Button disabled={!formik.dirty || !formik.isValid} fullWidth variant='contained' onClick={handleSubmit}>
-        Sign In
-      </Button>
-      <$SignUpLink>
-        New User?{' '}
-        <Button size='small' disableRipple sx={{ fontSize: '16px' }} onClick={() => handleFormChange('sign-up-form')}>
-          Sign Up
+                  '&.Mui-checked': {
+                    color: '#47e7e7',
+                  },
+                  '& .css-zddgej-MuiFormControlLabel-root .MuiFormControlLabel-label': {
+                    color: 'white',
+                  },
+                }}
+              />
+            }
+            sx={{
+              '& .MuiFormControlLabel-label': {
+                color: '#e8e8e8',
+                fontSize: '16px',
+              },
+            }}
+          />
+        </FormGroup>
+        <Button disabled={!formik.dirty || !formik.isValid} fullWidth variant='contained' onClick={handleSubmit}>
+          Sign In
         </Button>
-      </$SignUpLink>
-      <$SocialLogin>
-        <GoogleIcon
-          htmlColor='#47e7e7'
-          fontSize='medium'
-          sx={{
-            '&:hover': {
-              backgroundColor: '#47e7e70d',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              transform: 'scale(1.3)',
-              transition: '.3s',
-            },
-          }}
-        />
-        <InstagramIcon
-          htmlColor='#47e7e7'
-          fontSize='medium'
-          sx={{
-            '&:hover': {
-              backgroundColor: '#47e7e70d',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              transform: 'scale(1.3)',
-              transition: '.3s',
-            },
-          }}
-        />
-        <TwitterIcon
-          htmlColor='#47e7e7'
-          fontSize='medium'
-          sx={{
-            '&:hover': {
-              backgroundColor: '#47e7e70d',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              transform: 'scale(1.3)',
-              transition: '.3s',
-            },
-          }}
-        />
-        <LinkedInIcon
-          htmlColor='#47e7e7'
-          fontSize='medium'
-          sx={{
-            '&:hover': {
-              backgroundColor: '#47e7e70d',
-              borderRadius: '50%',
-              cursor: 'pointer',
-              transform: 'scale(1.3)',
-              transition: '.3s',
-            },
-          }}
-        />
-      </$SocialLogin>
+        <$SignUpLink>
+          New User?{' '}
+          <Button size='small' disableRipple sx={{ fontSize: '16px' }} onClick={() => handleFormChange('sign-up-form')}>
+            Sign Up
+          </Button>
+        </$SignUpLink>
+        <$SocialLogin>
+          <GoogleIcon
+            htmlColor='#47e7e7'
+            fontSize='medium'
+            sx={{
+              '&:hover': {
+                backgroundColor: '#47e7e70d',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                transform: 'scale(1.3)',
+                transition: '.3s',
+              },
+            }}
+          />
+          <InstagramIcon
+            htmlColor='#47e7e7'
+            fontSize='medium'
+            sx={{
+              '&:hover': {
+                backgroundColor: '#47e7e70d',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                transform: 'scale(1.3)',
+                transition: '.3s',
+              },
+            }}
+          />
+          <TwitterIcon
+            htmlColor='#47e7e7'
+            fontSize='medium'
+            sx={{
+              '&:hover': {
+                backgroundColor: '#47e7e70d',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                transform: 'scale(1.3)',
+                transition: '.3s',
+              },
+            }}
+          />
+          <LinkedInIcon
+            htmlColor='#47e7e7'
+            fontSize='medium'
+            sx={{
+              '&:hover': {
+                backgroundColor: '#47e7e70d',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                transform: 'scale(1.3)',
+                transition: '.3s',
+              },
+            }}
+          />
+        </$SocialLogin>
+      </form>
     </>
   );
 }

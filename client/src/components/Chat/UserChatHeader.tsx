@@ -1,15 +1,13 @@
-import { styled } from '@mui/material';
+import { Avatar, styled } from '@mui/material';
+import { format, parseISO } from 'date-fns';
 import { useStore } from 'store/Store';
+import { getAvatarBgColor } from './helpers';
 
 const $Container = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   // width: '100%',
   padding: '8px 16px',
-}));
-
-const $UserImage = styled('img')(() => ({
-  borderRadius: '50%',
 }));
 
 const $UserInfo = styled('div')(() => ({
@@ -30,6 +28,7 @@ const $LastMessage = styled('p')(() => ({
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  marginTop: 4,
   // width: '90%',
 }));
 
@@ -44,16 +43,15 @@ export default function UserChatHeader() {
 
   return (
     <$Container>
-      <div>
-        <$UserImage
-          src={`http://localhost:4000/api/user/avatar/${selectedUser.contactUserId}`}
-          width='50px'
-          height='50px'
-        />
-      </div>
+      <Avatar
+        src={`http://localhost:4000/api/user/avatar/${selectedUser.contactUserId}`}
+        sx={{ width: 45, height: 45, backgroundColor: getAvatarBgColor(selectedUser.name) }}
+      >
+        {selectedUser?.name?.charAt(0)}
+      </Avatar>
       <$UserInfo>
         <$UserName>{selectedUser.name}</$UserName>
-        <$LastMessage>{selectedUser.lastMessage}</$LastMessage>
+        <$LastMessage>Last seen at {format(parseISO(selectedUser.lastActive), 'dd/MM/yyyy h:mm aaa')}</$LastMessage>
       </$UserInfo>
     </$Container>
   );

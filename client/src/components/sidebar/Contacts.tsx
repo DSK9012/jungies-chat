@@ -1,8 +1,8 @@
 import { styled } from '@mui/material';
 import { useStore } from 'store/Store';
 import { IContact } from 'helpers/types';
-import error from 'assets/error.svg';
-import noContcats from 'assets/no-contacts.svg';
+import { ReactComponent as ErrorImg } from 'assets/error.svg';
+import { ReactComponent as NoContactsImg } from 'assets/no-contacts.svg';
 import RenderSearchedContacts from './RenderSearchedContacts';
 import RenderContactSkelton from './RenderContactSkelton';
 import RenderContact from './RenderContact';
@@ -38,6 +38,7 @@ export const $UserContainer = styled('div')(() => ({
 
 export const $UserImage = styled('img')(() => ({
   borderRadius: '50%',
+  objectFit: 'cover',
 }));
 
 export const $UserInfo = styled('div')(() => ({
@@ -124,7 +125,7 @@ export default function Users({ searchMode, handleClose }: IProps) {
   if (hasError) {
     return (
       <$NoContactsContainer>
-        <img src={error} alt='error' width='180px' height='200px' />
+        <ErrorImg width='180px' height='200px' />
         <$NoContactsText>Ooops, Please try again</$NoContactsText>
       </$NoContactsContainer>
     );
@@ -133,7 +134,7 @@ export default function Users({ searchMode, handleClose }: IProps) {
   if (!contacts.length) {
     return (
       <$NoContactsContainer>
-        <img src={noContcats} alt='no-contacts' width='180px' height='200px' />
+        <NoContactsImg width='180px' height='200px' />
         <$NoContactsText>No contacts</$NoContactsText>
       </$NoContactsContainer>
     );
