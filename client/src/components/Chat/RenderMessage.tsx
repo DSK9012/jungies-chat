@@ -41,6 +41,7 @@ const $MsgTime = styled('sub')(({ theme }) => ({
 const $Text = styled('p')(() => ({
   fontSize: '16px',
   marginBottom: '4px',
+  whiteSpace: 'pre-wrap',
 }));
 
 interface IRenderMessageProps {

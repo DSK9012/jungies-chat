@@ -35,7 +35,7 @@ export default function ChatInput() {
   };
 
   const handleKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter') {
+    if (!event.shiftKey && event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
       handleSubmit();
