@@ -55,7 +55,7 @@ export default function SignInForm({ handleFormChange }: ISignInFormProps) {
 
   return (
     <>
-      <$AvatarContainer>
+      {/* <$AvatarContainer>
         <Avatar
           alt='User Avatar'
           src=''
@@ -68,7 +68,7 @@ export default function SignInForm({ handleFormChange }: ISignInFormProps) {
         >
           <PersonIcon />
         </Avatar>
-      </$AvatarContainer>
+      </$AvatarContainer> */}
       <br />
       <form>
         <CustomTextField
@@ -148,7 +148,7 @@ export default function SignInForm({ handleFormChange }: ISignInFormProps) {
             Sign Up
           </Button>
         </$SignUpLink>
-        <$SocialLogin>
+        {/* <$SocialLogin>
           <GoogleIcon
             htmlColor='#47e7e7'
             fontSize='medium'
@@ -201,7 +201,7 @@ export default function SignInForm({ handleFormChange }: ISignInFormProps) {
               },
             }}
           />
-        </$SocialLogin>
+        </$SocialLogin> */}
       </form>
     </>
   );

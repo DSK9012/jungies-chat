@@ -83,7 +83,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
 
   return (
     <>
-      <$AvatarContainer
+      {/* <$AvatarContainer
         style={{ borderColor: validImg ? '#47e7e7' : '#ff7100', marginBottom: validImg ? '16px' : '8px' }}
       >
         <$FileLabel htmlFor='avatar'>
@@ -138,7 +138,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
             </Avatar>
           </Badge>
         </$FileLabel>
-      </$AvatarContainer>
+      </$AvatarContainer> */}
       {!validImg && (
         <$UserAvatarFieldError>
           Allowed image types are .jpg, jpeg, .png and size should not exceed 500 KB.
@@ -256,7 +256,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
             Sign In
           </Button>
         </$SignUpLink>
-        <$SocialLogin>
+        {/* <$SocialLogin>
           <GoogleIcon
             htmlColor='#47e7e7'
             fontSize='medium'
@@ -309,7 +309,7 @@ export default function SignUpForm({ handleFormChange }: ISignupFormProps) {
               },
             }}
           />
-        </$SocialLogin>
+        </$SocialLogin> */}
       </form>
     </>
   );
