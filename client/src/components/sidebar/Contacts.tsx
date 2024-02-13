@@ -51,6 +51,7 @@ export const $UserName = styled('h4')(() => ({
   textOverflow: 'ellipsis',
   fontSize: '18px',
   marginBottom: '4px',
+  fontWeight: 400,
 }));
 
 export const $LastMessage = styled('p')(() => ({

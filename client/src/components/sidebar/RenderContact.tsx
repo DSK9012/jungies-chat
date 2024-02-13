@@ -29,10 +29,7 @@ const $Notifications = styled('span')(() => ({
 
 const RenderContact = ({ user, handleSelectUser }: IRenderContactProps) => {
   const {
-    userContext: {
-      selectedUser,
-      userInfo: { _id },
-    },
+    userContext: { selectedUser },
   } = useStore();
 
   return (
@@ -50,9 +47,9 @@ const RenderContact = ({ user, handleSelectUser }: IRenderContactProps) => {
         <$UserName>{user.name}</$UserName>
         <$LastMessage>{user.lastMessage}</$LastMessage>
       </$UserInfo>
-      {user.unreadNotifications && user.contactUserId === _id && (
+      {/* {user.unreadNotifications && user.contactUserId === _id && (
         <$Notifications>{user.unreadNotifications < 99 ? user.unreadNotifications : '99+'}</$Notifications>
-      )}
+      )} */}
     </$UserContainer>
   );
 };

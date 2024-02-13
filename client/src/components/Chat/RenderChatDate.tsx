@@ -25,7 +25,7 @@ const RenderChatDate = ({ index, messages }: IRenderChatDateProps) => {
     new Date(messages[index].createdAt).toDateString() !== new Date(messages[index - 1].createdAt).toDateString()
   ) {
     return (
-      <Box display='flex' alignItems='center' width='100%'>
+      <Box display='flex' alignItems='center' width='100%' mt={1}>
         <$Container sx={{ flex: 1 }} />
         <Typography
           fontSize={12}
